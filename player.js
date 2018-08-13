@@ -8,6 +8,7 @@
  * @param {!HTMLMediaElement} mediaElement for video rendering.
  */
 const Player = function(mediaElement) {
+  console.log("SETTING PLAYER:");
   const namespace = 'urn:x-cast:com.google.ads.interactivemedia.dai.cast';
   const self = this;
   this.castPlayer_ = null;
@@ -91,6 +92,8 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.ERROR,
       function(event) {
+        console.log("GOT AN ERROR");
+        console.log(event);
         const errorMessage = event.getStreamData().errorMessage;
         self.broadcast_(errorMessage);
       },
