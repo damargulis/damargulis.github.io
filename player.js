@@ -91,6 +91,8 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.ERROR,
       function(event) {
+        console.log("GOT AN ERROR!!!!");
+        console.log(event);
         const errorMessage = event.getStreamData().errorMessage;
         self.broadcast_(errorMessage);
       },
