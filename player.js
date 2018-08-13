@@ -8,6 +8,7 @@
  * @param {!HTMLMediaElement} mediaElement for video rendering.
  */
 const Player = function(mediaElement) {
+  console.log("TEST TEST TEST TEST");
   const namespace = 'urn:x-cast:com.google.ads.interactivemedia.dai.cast';
   const self = this;
   this.castPlayer_ = null;
