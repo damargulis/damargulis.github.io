@@ -243,6 +243,7 @@ Player.prototype.onLoad = function(event) {
   console.log(imaRequestData);
   if (imaRequestData.assetKey) {
     console.log(1);
+    debugger;
     this.streamRequest =
       new google.ima.dai.api.LiveStreamRequest(imaRequestData);
     console.log(this.streamRequest);
