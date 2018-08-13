@@ -235,17 +235,26 @@ Player.prototype.onLoad = function(event) {
    *       videoID: <VIDEO_ID>
    *     }
    */
+
+  console.log("onLoad!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   const imaRequestData = event.data.media.customData;
   this.startTime_ = imaRequestData.startTime;
   this.needsCredentials_ = imaRequestData.needsCredentials;
+  console.log(imaRequestData);
   if (imaRequestData.assetKey) {
+    console.log(1);
     this.streamRequest =
       new google.ima.dai.api.LiveStreamRequest(imaRequestData);
+    console.log(this.streamRequest);
   } else if (imaRequestData.contentSourceId) {
+    console.log(2);
     this.streamRequest =
       new google.ima.dai.api.VODStreamRequest(imaRequestData);
+    console.log(this.streamRequest);
   }
+  console.log(3);
   this.streamManager_.requestStream(this.streamRequest);
+  console.log(4);
   document.getElementById('splash').style.display = 'none';
 };
 
