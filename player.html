@@ -50,7 +50,8 @@ mediaManager.onLoad = function(event) {
     var ext = url.substring(url.lastIndexOf('.'), url.length);
     var initStart = event.data['media']['currentTime'] || 0;
     var autoplay = event.data['autoplay'] || true;
-    var protocol = cast.player.api.CreateHlsStreamingProtocol(window.host);
+    var protocol = cast.player.api.CreateHlsStreamingProtocol(host);
+    mediaElement.autoplay = autoplay;
     host.onError = function(errCode) {
       console.log("Fatal Error - " + errCode);
       if (window.player) {
