@@ -238,7 +238,6 @@ Player.prototype.onLoad = function(event) {
   this.startTime_ = imaRequestData.startTime;
   this.needsCredentials_ = imaRequestData.needsCredentials;
   if (imaRequestData.assetKey) {
-    debugger;
     this.streamRequest =
       new google.ima.dai.api.LiveStreamRequest(imaRequestData);
   } else if (imaRequestData.contentSourceId) {
