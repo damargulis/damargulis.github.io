@@ -247,8 +247,8 @@ Player.prototype.onLoad = function(event) {
 
   const imaRequestData = event.data.media.customData;
   this.startTime_ = imaRequestData.startTime;
-  this.needsCredentials_ = imaRequestData.needsCredentials;
-  //this.needsCredentials_ = true;
+  //this.needsCredentials_ = imaRequestData.needsCredentials;
+  this.needsCredentials_ = true;
   if (imaRequestData.assetKey) {
     this.streamRequest =
       new google.ima.dai.api.LiveStreamRequest(imaRequestData);
