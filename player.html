@@ -51,6 +51,8 @@ mediaManager.onLoad = function(event) {
     var initStart = event.data['media']['currentTime'] || 0;
     var autoplay = event.data['autoplay'] || true;
     var protocol = cast.player.api.CreateHlsStreamingProtocol(host);
+    console.log('created protocol');
+    console.log(protocol);
     mediaElement.autoplay = autoplay;
     host.onError = function(errCode) {
       console.log("Fatal Error - " + errCode);
@@ -67,6 +69,7 @@ mediaManager.onLoad = function(event) {
 
     console.log("Starting Media Player Library");
     window.player = new cast.player.api.Player(host);
+    console.log('calling load');
     window.player.load(protocol, initStart);
   }
 }
