@@ -68,6 +68,7 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.LOADED,
       function(event) {
+        console.log("IMA LOADED");
         const streamUrl = event.getStreamData().url;
         // Each element in subtitles array is an object with url and language
         // properties. Example of a subtitles array with 2 elements:
@@ -85,12 +86,14 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.STREAM_INITIALIZED,
       function(event) {
+        console.log("IMA STREAM INIT");
         self.broadcast_('streamInit');
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.ERROR,
       function(event) {
+        console.log("IMA ERROR:");
         console.log(event);
         const errorMessage = event.getStreamData().errorMessage;
         self.broadcast_(errorMessage);
@@ -99,43 +102,49 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.CUEPOINTS_CHANGED,
       function(event) {
-        console.log("Cuepoints changed: ");
+        console.log("IMA Cuepoints changed: ");
         console.log(event.getStreamData());
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.STARTED,
       function(event) {
+        console.log("IMA STARTED");
         self.broadcast_('started');
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.FIRST_QUARTILE,
       function(event) {
+        console.log("IMA FIRST_QUARTILE");
         self.broadcast_('firstQuartile');
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.MIDPOINT,
       function(event) {
+        console.log("IMA MIDPOINT");
         self.broadcast_('midpoint');
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.THIRD_QUARTILE,
       function(event) {
+        console.log("IMA THIRD QUARTILE");
         self.broadcast_('thirdQuartile');
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.COMPLETE,
       function(event) {
+        console.log("IMA COMPLETE");
         self.broadcast_('complete');
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.AD_BREAK_STARTED,
       function(event) {
+        console.log("IMA AD BREAK STARTED");
         self.adIsPlaying_ = true;
         document.getElementById('ad-ui').style.display = 'block';
         self.broadcast_('adBreakStarted');
@@ -144,6 +153,7 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.AD_BREAK_ENDED,
       function(event) {
+        console.log("IMA AD BREAK ENDED");
         self.adIsPlaying_ = false;
         document.getElementById('ad-ui').style.display = 'none';
         self.broadcast_('adBreakEnded');
@@ -156,6 +166,7 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.AD_PROGRESS,
       function(event) {
+        console.log("IMA AD PRORESS");
         const adData = event.getStreamData().adProgressData;
         document.getElementById('ad-position').innerHTML
           = adData.adPosition;
