@@ -28,13 +28,48 @@
 -->
 
 <html>
-  <head>
-    <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
-  </head>
   <body>
-    <cast-media-player></cast-media-player>
-<script>
-cast.framework.CastReceiverContext.getInstance().start();
+    <video id='vid' />
+    <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+    <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/mediaplayer/1.0.0/media_player.js"></script>
+<script type="text/javascript">
+var mediaElement = document.getElementById('vid');
+window.mediaManager = new cast.receiver.MediaManager(mediaElement);
+window.defaultOnLoad = mediaManager.onLoad.bind(mediaManager);
+
+mediaManager.onLoad = function(event) {
+  if (window.player !== null) {
+    player.unload();
+    window.player = null;
+}
+
+if (event.data['media'] && event.data['media']['contentId']) {
+  console.log('Starting media appliation');
+  var url = event.data['media']['contentId'];
+  window.host = new cast.player.api.Host({'mediaElement':mediaElement, 'url':url});
+  var ext = url.substring(url.lastIndexOf('.'), url.length);
+  var initStart = event.data['media']['currentTime'] || 0;
+  var autoplay = event.data['autoplay'] || true;
+  var protocol = cast.player.api.CreateHlsStreamingProtocol(window.host);
+  window.host.onError = function(errCode) {
+    console.log("Fatal Error - " + errCode);
+    if (window.player) {
+      window.player.unload();
+      window.player = null;
+    }
+  }
+  window.host.updateSegmentRequestInfo = function(requestInfo) {
+    requestInfo.withCredentials = true;
+  }
+
+  console.log("Starting Media Player Library");
+  window.player = new cast.player.api.Player(host);
+  window.player.load(protocol, initStart);
+}
+window.player = null;
+console.log('Application is ready, starting system');
+window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+castReceiverManager.start();
 </script>
   </body>
 </html>
