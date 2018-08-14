@@ -20,7 +20,7 @@ const Player = function(mediaElement) {
   this.mediaElement_.addEventListener('error', function(event) {
     console.log("MEDIA ELEMENT ERROR:");
     console.log(event);
-  }
+  });
 
   this.receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
   this.receiverManager_.onSenderConnected = function(event) {
