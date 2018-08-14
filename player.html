@@ -41,6 +41,7 @@ mediaManager.onLoad = function(event) {
   if (window.player !== null) {
     player.unload();
     window.player = null;
+  }
 }
 
 if (event.data['media'] && event.data['media']['contentId']) {
