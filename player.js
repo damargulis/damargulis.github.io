@@ -297,8 +297,8 @@ Player.prototype.onStreamDataReceived = function(url) {
   const updateSegmentRequestInfoCallback = function(requestInfo) {
     if (self.needsCredentials_) {
       requestInfo.withCredentials = true;
-      requestInfo.headers = {};
-      requestInfo.headers['content-type'] = 'application/x-mpegurl';
+      //requestInfo.headers = {};
+      //requestInfo.headers['content-type'] = 'application/x-mpegurl';
     }
   };
 
