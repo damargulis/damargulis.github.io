@@ -8,7 +8,6 @@
  * @param {!HTMLMediaElement} mediaElement for video rendering.
  */
 const Player = function(mediaElement) {
-  console.log("SETTING PLAYER:");
   const namespace = 'urn:x-cast:com.google.ads.interactivemedia.dai.cast';
   const self = this;
   this.castPlayer_ = null;
@@ -92,7 +91,6 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.ERROR,
       function(event) {
-        console.log("GOT AN ERROR");
         console.log(event);
         const errorMessage = event.getStreamData().errorMessage;
         self.broadcast_(errorMessage);
@@ -236,26 +234,18 @@ Player.prototype.onLoad = function(event) {
    *     }
    */
 
-  console.log("onLoad!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   const imaRequestData = event.data.media.customData;
   this.startTime_ = imaRequestData.startTime;
   this.needsCredentials_ = imaRequestData.needsCredentials;
-  console.log(imaRequestData);
   if (imaRequestData.assetKey) {
-    console.log(1);
     debugger;
     this.streamRequest =
       new google.ima.dai.api.LiveStreamRequest(imaRequestData);
-    console.log(this.streamRequest);
   } else if (imaRequestData.contentSourceId) {
-    console.log(2);
     this.streamRequest =
       new google.ima.dai.api.VODStreamRequest(imaRequestData);
-    console.log(this.streamRequest);
   }
-  console.log(3);
   this.streamManager_.requestStream(this.streamRequest);
-  console.log(4);
   document.getElementById('splash').style.display = 'none';
 };
 
@@ -307,6 +297,8 @@ Player.prototype.onStreamDataReceived = function(url) {
   const updateSegmentRequestInfoCallback = function(requestInfo) {
     if (self.needsCredentials_) {
       requestInfo.withCredentials = true;
+      requestInfo.headers = {};
+      requestInfo.headers['content-type'] = 'application/x-mpegurl';
     }
   };
 
