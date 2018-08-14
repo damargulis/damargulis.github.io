@@ -59,6 +59,7 @@ mediaManager.onLoad = function(event) {
       }
     }
     window.host.updateSegmentRequestInfo = function(requestInfo) {
+      console.log('add with Credentials');
       requestInfo.withCredentials = true;
     }
 
