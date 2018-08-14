@@ -42,30 +42,30 @@ mediaManager.onLoad = function(event) {
     player.unload();
     window.player = null;
   }
-}
 
-if (event.data['media'] && event.data['media']['contentId']) {
-  console.log('Starting media appliation');
-  var url = event.data['media']['contentId'];
-  window.host = new cast.player.api.Host({'mediaElement':mediaElement, 'url':url});
-  var ext = url.substring(url.lastIndexOf('.'), url.length);
-  var initStart = event.data['media']['currentTime'] || 0;
-  var autoplay = event.data['autoplay'] || true;
-  var protocol = cast.player.api.CreateHlsStreamingProtocol(window.host);
-  window.host.onError = function(errCode) {
-    console.log("Fatal Error - " + errCode);
-    if (window.player) {
-      window.player.unload();
-      window.player = null;
+  if (event.data['media'] && event.data['media']['contentId']) {
+    console.log('Starting media appliation');
+    var url = event.data['media']['contentId'];
+    window.host = new cast.player.api.Host({'mediaElement':mediaElement, 'url':url});
+    var ext = url.substring(url.lastIndexOf('.'), url.length);
+    var initStart = event.data['media']['currentTime'] || 0;
+    var autoplay = event.data['autoplay'] || true;
+    var protocol = cast.player.api.CreateHlsStreamingProtocol(window.host);
+    window.host.onError = function(errCode) {
+      console.log("Fatal Error - " + errCode);
+      if (window.player) {
+        window.player.unload();
+        window.player = null;
+      }
     }
-  }
-  window.host.updateSegmentRequestInfo = function(requestInfo) {
-    requestInfo.withCredentials = true;
-  }
+    window.host.updateSegmentRequestInfo = function(requestInfo) {
+      requestInfo.withCredentials = true;
+    }
 
-  console.log("Starting Media Player Library");
-  window.player = new cast.player.api.Player(host);
-  window.player.load(protocol, initStart);
+    console.log("Starting Media Player Library");
+    window.player = new cast.player.api.Player(host);
+    window.player.load(protocol, initStart);
+  }
 }
 window.player = null;
 console.log('Application is ready, starting system');
