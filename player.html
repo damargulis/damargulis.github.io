@@ -51,14 +51,15 @@ mediaManager.onLoad = function(event) {
     var initStart = event.data['media']['currentTime'] || 0;
     var autoplay = event.data['autoplay'] || true;
     var protocol = cast.player.api.CreateHlsStreamingProtocol(window.host);
-    window.host.onError = function(errCode) {
+    host.onError = function(errCode) {
       console.log("Fatal Error - " + errCode);
       if (window.player) {
         window.player.unload();
         window.player = null;
       }
     }
-    window.host.updateSegmentRequestInfo = function(requestInfo) {
+    console.log('overriding host method');
+    host.updateSegmentRequestInfo = function(requestInfo) {
       console.log('add with Credentials');
       requestInfo.withCredentials = true;
     }
