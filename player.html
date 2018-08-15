@@ -35,7 +35,6 @@
 <script type="text/javascript">
 var mediaElement = document.getElementById('vid');
 window.mediaManager = new cast.receiver.MediaManager(mediaElement);
-window.defaultOnLoad = mediaManager.onLoad.bind(mediaManager);
 
 mediaManager.onLoad = function(event) {
   if (window.player !== null) {
@@ -50,7 +49,6 @@ mediaManager.onLoad = function(event) {
     var ext = url.substring(url.lastIndexOf('.'), url.length);
     var initStart = event.data['media']['currentTime'] || 0;
     var autoplay = event.data['autoplay'] || true;
-    var protocol = cast.player.api.CreateHlsStreamingProtocol(host);
     console.log('created protocol');
     console.log(protocol);
     mediaElement.autoplay = autoplay;
@@ -66,9 +64,18 @@ mediaManager.onLoad = function(event) {
       console.log('add with Credentials');
       requestInfo.withCredentials = true;
     }
+    host.updateManifestRequestInfo = function(requestInfo) {
+      console.log('updateManifest');
+      requestInfo.withCredentials = true;
+    }
+    host.updateLicenseRequestInfo = function(requestInfo) {
+      console.log('updateLicenseRequestInfo');
+      requestInfo.withCredentials = true;
+    }
 
     console.log("Starting Media Player Library");
     window.player = new cast.player.api.Player(host);
+    var protocol = cast.player.api.CreateHlsStreamingProtocol(host);
     console.log('calling load');
     window.player.load(protocol, initStart);
   }

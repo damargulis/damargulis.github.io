@@ -307,6 +307,7 @@ Player.prototype.onStreamDataReceived = function(url) {
     }
   };
   const updateLicenseRequestInfoCallback = function(requestInfo) {
+    console.log('updateLicenseRequestInfoCallback');
     if (self.needsCredentials_) {
       requestInfo.withCredentials = true;
     }
