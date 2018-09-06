@@ -2,19 +2,21 @@
   <title>IMA Example receiver</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 <script>
-//window.Proxy = function() {}
+window.Proxy = function() {
+  console.log("PROXY WAS CALLED");
+}
 </script>
   <script src="//www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js"></script>
   <!-- <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script> -->
-  <!-- <script src="https://storage.googleapis.com/gvabox/damargulis/debug/wrapper.js"></script> -->
+  <script src="https://storage.googleapis.com/gvabox/damargulis/debug/wrapper.js"></script>
   <script type="text/javascript" src="client_player.js"></script>
 </head>
 <body>
   <div id="adContainer">
     <cast-media-player id="player"></cast-media-player>
     <script>
-      //var player = new Player();
-      cast.framework.CastReceiverContext.getInstance().start();
+      var player = new Player();
+      //cast.framework.CastReceiverContext.getInstance().start();
     </script>
   </div>
 </body>
