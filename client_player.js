@@ -80,6 +80,7 @@ Player.prototype.setupCallbacks_ = function() {
   this.playerManager_.setMessageInterceptor(
       cast.framework.messages.MessageType.LOAD,
       (request) => {
+        console.log('load message received?');
         if (!this.request_) {
           self.initIMA_();
         }
@@ -241,6 +242,6 @@ function sleep(ms) {
  */
 Player.prototype.seek_ = function(time) {
   this.currentContentTime_ = time;
-  //this.playerManager_.seek(time);
-  //this.playerManager_.play();
+  this.playerManager_.seek(time);
+  this.playerManager_.play();
 };
