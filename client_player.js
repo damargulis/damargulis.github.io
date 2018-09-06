@@ -176,6 +176,10 @@ Player.prototype.onContentPauseRequested_ = function() {
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
 };
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 /**
  * When an ad finishes playing and AdsManager resumes content.
  * @private
@@ -183,6 +187,9 @@ Player.prototype.onContentPauseRequested_ = function() {
 Player.prototype.onContentResumeRequested_ = function() {
   this.broadcast_('onContentResumeRequested');
 
+  console.log('starting sleep');
+  await sleep(10000);
+  console.log('ending sleep');
   this.playerManager_.load(this.request_);
   this.seek_(this.currentContentTime_);
 };
