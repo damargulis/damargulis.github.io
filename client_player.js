@@ -188,10 +188,11 @@ Player.prototype.onContentResumeRequested_ = function() {
   this.broadcast_('onContentResumeRequested');
 
   console.log('starting sleep');
-  await sleep(10000);
-  console.log('ending sleep');
-  this.playerManager_.load(this.request_);
-  this.seek_(this.currentContentTime_);
+  sleep(5000).then(() => {
+    console.log('ending sleep');
+    this.playerManager_.load(this.request_);
+    this.seek_(this.currentContentTime_);
+  });
 };
 
 /**
