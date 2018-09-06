@@ -191,8 +191,12 @@ Player.prototype.onContentResumeRequested_ = function() {
   console.log("Player onContentResumeRequested_");
   this.broadcast_('onContentResumeRequested');
 
-  this.playerManager_.load(this.request_);
-  this.seek_(this.currentContentTime_);
+  console.log('waiting');
+  sleep(5000).then(() => {
+    console.log('done wait');
+    this.playerManager_.load(this.request_);
+    this.seek_(this.currentContentTime_);
+  });
 };
 
 /**
@@ -236,13 +240,7 @@ function sleep(ms) {
  * @private
  */
 Player.prototype.seek_ = function(time) {
-  console.log("Player seek_");
   this.currentContentTime_ = time;
-  console.log("now wait");
-  sleep(5000).then(() => {
-    console.log("done wait now seek");
-    this.playerManager_.seek(time);
-    console.log("play");
-    this.playerManager_.play();
-  });
+  //this.playerManager_.seek(time);
+  //this.playerManager_.play();
 };
