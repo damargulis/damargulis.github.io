@@ -238,10 +238,11 @@ function sleep(ms) {
 Player.prototype.seek_ = function(time) {
   console.log("Player seek_");
   this.currentContentTime_ = time;
-  this.playerManager_.seek(time);
-  console.log("seek now wait");
+  console.log("now wait");
   sleep(5000).then(() => {
-    console.log("dont wait now play");
+    console.log("done wait now seek");
+    this.playerManager_.seek(time);
+    console.log("play");
     this.playerManager_.play();
   });
 };
