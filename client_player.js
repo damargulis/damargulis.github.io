@@ -226,6 +226,10 @@ Player.prototype.requestAd_ = function(adTag, currentTime) {
   this.adsLoader_.requestAds(adsRequest);
 };
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 /**
  * Seeks content video.
  * @param {!float} time time to seek to.
@@ -235,5 +239,9 @@ Player.prototype.seek_ = function(time) {
   console.log("Player seek_");
   this.currentContentTime_ = time;
   this.playerManager_.seek(time);
-  this.playerManager_.play();
+  console.log("seek now wait");
+  sleep(5000).then(() => {
+    console.log("dont wait now play");
+    this.playerManager_.play();
+  });
 };
