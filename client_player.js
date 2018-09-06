@@ -23,6 +23,7 @@ const NAMESPACE = 'urn:x-cast:com.google.ads.ima.cast';
  *
  */
 let Player = function() {
+  console.log("Player constructor");
   this.context_ = cast.framework.CastReceiverContext.getInstance();
   this.playerManager_ = this.context_.getPlayerManager();
   this.mediaElement_ = document.getElementById('player').getMediaElement();
@@ -42,6 +43,7 @@ let Player = function() {
  * @private
  */
 Player.prototype.setupCallbacks_ = function() {
+  console.log("Player setupCallbacks_");
   let self = this;
 
   // Chromecast device is disconnected from sender app.
@@ -93,6 +95,7 @@ Player.prototype.setupCallbacks_ = function() {
  * @private
  */
 Player.prototype.broadcast_ = function(message) {
+  console.log("Player broadcast_");
   this.context_.sendCustomMessage(NAMESPACE, undefined, message);
 };
 
@@ -101,6 +104,7 @@ Player.prototype.broadcast_ = function(message) {
  * @private
  */
 Player.prototype.initIMA_ = function() {
+  console.log("Player initIMA_");
   this.currentContentTime_ = -1;
   let adDisplayContainer = new google.ima.AdDisplayContainer(
       document.getElementById('adContainer'), this.mediaElement_);
@@ -123,6 +127,7 @@ Player.prototype.initIMA_ = function() {
  * @private
  */
 Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
+  console.log("Player onAdsManagerLoaded_");
   let adsRenderingSettings = new google.ima.AdsRenderingSettings();
   adsRenderingSettings.playAdsAfterTime = this.currentContentTime_;
 
@@ -157,6 +162,7 @@ Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
  * @private
  */
 Player.prototype.onAdError_ = function(adErrorEvent) {
+  console.log("Player onAdError_");
   this.broadcast_('Ad Error: ' + adErrorEvent.getError().toString());
   // Handle the error logging.
   if (this.adsManager_) {
@@ -172,27 +178,21 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
  * @private
  */
 Player.prototype.onContentPauseRequested_ = function() {
+  console.log("Player onContentPauseRequested_");
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
 };
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 /**
  * When an ad finishes playing and AdsManager resumes content.
  * @private
  */
 Player.prototype.onContentResumeRequested_ = function() {
+  console.log("Player onContentResumeRequested_");
   this.broadcast_('onContentResumeRequested');
 
-  console.log('starting sleep');
-  sleep(5000).then(() => {
-    console.log('ending sleep');
-    this.playerManager_.load(this.request_);
-    this.seek_(this.currentContentTime_);
-  });
+  this.playerManager_.load(this.request_);
+  this.seek_(this.currentContentTime_);
 };
 
 /**
@@ -200,6 +200,7 @@ Player.prototype.onContentResumeRequested_ = function() {
  * @private
  */
 Player.prototype.onAllAdsCompleted_ = function() {
+  console.log("Player onAllAdsCompleted_");
   if (this.adsManager_) {
     this.adsManager_.destroy();
   }
@@ -212,6 +213,7 @@ Player.prototype.onAllAdsCompleted_ = function() {
  * @private
  */
 Player.prototype.requestAd_ = function(adTag, currentTime) {
+  console.log("Player requestAd_");
   if (currentTime != 0) {
     this.currentContentTime_ = currentTime;
   }
@@ -230,6 +232,7 @@ Player.prototype.requestAd_ = function(adTag, currentTime) {
  * @private
  */
 Player.prototype.seek_ = function(time) {
+  console.log("Player seek_");
   this.currentContentTime_ = time;
   this.playerManager_.seek(time);
   this.playerManager_.play();
