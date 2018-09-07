@@ -133,6 +133,7 @@ Player.prototype.initIMA_ = function() {
  */
 Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
   console.log("Player onAdsManagerLoaded_");
+  console.log(this.request_);
   let adsRenderingSettings = new google.ima.AdsRenderingSettings();
   adsRenderingSettings.playAdsAfterTime = this.currentContentTime_;
 
@@ -184,6 +185,7 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
  */
 Player.prototype.onContentPauseRequested_ = function() {
   console.log("Player onContentPauseRequested_");
+  console.log(this.request_);
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
 };
@@ -226,6 +228,7 @@ Player.prototype.onAllAdsCompleted_ = function() {
  */
 Player.prototype.requestAd_ = function(adTag, currentTime) {
   console.log("Player requestAd_");
+  console.log(this.request_);
   if (currentTime != 0) {
     this.currentContentTime_ = currentTime;
   }
