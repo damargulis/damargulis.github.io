@@ -196,12 +196,14 @@ Player.prototype.onContentResumeRequested_ = function() {
   console.log("Player onContentResumeRequested_");
   this.broadcast_('onContentResumeRequested');
 
-  sleep(10000).then(() => {
-    this.playerManager_.load(this.request_);
-    sleep(10000).then(() => {
-      this.seek_(this.currentContentTime_);
-    });
-  });
+  this.playerManager_.load(this.request_);
+  this.seek_(this.currentContentTime_);
+  //sleep(10000).then(() => {
+  //  this.playerManager_.load(this.request_);
+  //  sleep(10000).then(() => {
+  //    this.seek_(this.currentContentTime_);
+  //  });
+  //});
 };
 
 /**
@@ -245,7 +247,10 @@ function sleep(ms) {
  * @private
  */
 Player.prototype.seek_ = function(time) {
+  console.log("Player seek_");
   this.currentContentTime_ = time;
+  console.log("playmanager seek");
   this.playerManager_.seek(time);
+  console.log("playermanager play");
   this.playerManager_.play();
 };
