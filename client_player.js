@@ -85,8 +85,6 @@ Player.prototype.setupCallbacks_ = function() {
         console.log(request);
         if (!this.request_) {
           self.initIMA_();
-          this.request_ = request;
-          return;
         }
         this.request_ = request;
         this.playerManager_.pause();
@@ -202,15 +200,18 @@ Player.prototype.onContentResumeRequested_ = function() {
   console.log(this.request_);
   this.broadcast_('onContentResumeRequested');
 
-  this.playerManager_.load(this.request_).then(() => {
-    this.seek_(this.currentContentTime_);
+  //this.playerManager_.load(this.request_)
+  //this.seek_(this.currentContentTime_);
+  console.log('starting sleep 1');
+  sleep(10000).then(() => {
+    console.log('ending sleep 1');
+    this.playerManager_.load(this.request_);
+    console.log('starting sleep 2');
+    sleep(10000).then(() => {
+      console.log('ending sleep 2');
+      this.seek_(this.currentContentTime_);
+    });
   });
-  //sleep(10000).then(() => {
-  //  this.playerManager_.load(this.request_);
-  //  sleep(10000).then(() => {
-  //    this.seek_(this.currentContentTime_);
-  //  });
-  //});
 };
 
 /**
