@@ -196,8 +196,9 @@ Player.prototype.onContentResumeRequested_ = function() {
   console.log("Player onContentResumeRequested_");
   this.broadcast_('onContentResumeRequested');
 
-  this.playerManager_.load(this.request_);
-  this.seek_(this.currentContentTime_);
+  this.playerManager_.load(this.request_).then(() => {
+    this.seek_(this.currentContentTime_);
+  });
   //sleep(10000).then(() => {
   //  this.playerManager_.load(this.request_);
   //  sleep(10000).then(() => {
