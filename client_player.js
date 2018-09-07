@@ -56,6 +56,7 @@ Player.prototype.setupCallbacks_ = function() {
   // where the first substring indicates the function to be called and the
   // following substrings are the parameters to be passed to the function.
   this.context_.addCustomMessageListener(NAMESPACE, (event) => {
+    console.log("customMessageListener");
     console.log(event.data);
     let message = event.data.split(',');
     let method = message[0];
@@ -195,8 +196,12 @@ Player.prototype.onContentResumeRequested_ = function() {
   console.log("Player onContentResumeRequested_");
   this.broadcast_('onContentResumeRequested');
 
-  this.playerManager_.load(this.request_);
-  this.seek_(this.currentContentTime_);
+  sleep(10000).then(() => {
+    this.playerManager_.load(this.request_);
+    sleep(10000).then(() => {
+      this.seek_(this.currentContentTime_);
+    });
+  });
 };
 
 /**
