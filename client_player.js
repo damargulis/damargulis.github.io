@@ -83,11 +83,12 @@ Player.prototype.setupCallbacks_ = function() {
       (request) => {
         console.log('load message received?');
         console.log(request);
-        this.request_ = request;
         if (!this.request_) {
           self.initIMA_();
+          this.request_ = request;
           return;
         }
+        this.request_ = request;
         this.playerManager_.pause();
         console.log('finished message intercept');
         return request;
