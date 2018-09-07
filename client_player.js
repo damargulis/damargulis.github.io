@@ -206,11 +206,7 @@ Player.prototype.onContentResumeRequested_ = function() {
   sleep(10000).then(() => {
     console.log('ending sleep 1');
     this.playerManager_.load(this.request_);
-    console.log('starting sleep 2');
-    sleep(10000).then(() => {
-      console.log('ending sleep 2');
-      this.seek_(this.currentContentTime_);
-    });
+    this.seek_(this.currentContentTime_);
   });
 };
 
