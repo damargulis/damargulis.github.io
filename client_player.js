@@ -89,6 +89,7 @@ Player.prototype.setupCallbacks_ = function() {
         this.request_ = request;
         this.playerManager_.pause();
         console.log('finished message intercept');
+        request.requestId = 2;
         return request;
       });
 };
