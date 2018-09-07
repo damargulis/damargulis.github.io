@@ -101,6 +101,7 @@ Player.prototype.setupCallbacks_ = function() {
 Player.prototype.broadcast_ = function(message) {
   console.log("Player broadcast_");
   console.log(message);
+  console.log(this.request_);
   this.context_.sendCustomMessage(NAMESPACE, undefined, message);
 };
 
@@ -196,6 +197,7 @@ Player.prototype.onContentPauseRequested_ = function() {
  */
 Player.prototype.onContentResumeRequested_ = function() {
   console.log("Player onContentResumeRequested_");
+  console.log(this.request_);
   this.broadcast_('onContentResumeRequested');
 
   this.playerManager_.load(this.request_).then(() => {
