@@ -81,6 +81,7 @@ Player.prototype.setupCallbacks_ = function() {
       cast.framework.messages.MessageType.LOAD,
       (request) => {
         console.log('load message received?');
+        console.log(request);
         if (!this.request_) {
           self.initIMA_();
         }
