@@ -81,15 +81,17 @@ Player.prototype.setupCallbacks_ = function() {
   this.playerManager_.setMessageInterceptor(
       cast.framework.messages.MessageType.LOAD,
       (request) => {
-        console.log('load message received?');
-        console.log(request);
-        if (!this.request_) {
-          self.initIMA_();
-        }
-        this.request_ = request;
-        this.playerManager_.pause();
-        console.log('finished message intercept');
-        return request;
+        return new Promise((resolve, reject) => {
+          console.log('load message received?');
+          console.log(request);
+          if (!this.request_) {
+            self.initIMA_();
+          }
+          this.request_ = request;
+          this.playerManager_.pause();
+          console.log('finished message intercept');
+          resolve(request);
+        });
       });
 };
 
