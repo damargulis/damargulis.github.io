@@ -81,17 +81,14 @@ Player.prototype.setupCallbacks_ = function() {
   this.playerManager_.setMessageInterceptor(
       cast.framework.messages.MessageType.LOAD,
       (request) => {
-        return new Promise((resolve, reject) => {
-          console.log('load message received?');
-          console.log(request);
-          if (!this.request_) {
-            self.initIMA_();
-          }
-          this.request_ = request;
-          this.playerManager_.pause();
-          console.log('finished message intercept');
-          resolve(request);
-        });
+        console.log('load message received?');
+        if (!this.request_) {
+          self.initIMA_();
+        }
+        this.request_ = request;
+        this.playerManager_.pause();
+        console.log('finished message intercept');
+        return request
       });
 };
 
@@ -103,7 +100,6 @@ Player.prototype.setupCallbacks_ = function() {
 Player.prototype.broadcast_ = function(message) {
   console.log("Player broadcast_");
   console.log(message);
-  console.log(this.request_);
   this.context_.sendCustomMessage(NAMESPACE, undefined, message);
 };
 
@@ -136,7 +132,6 @@ Player.prototype.initIMA_ = function() {
  */
 Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
   console.log("Player onAdsManagerLoaded_");
-  console.log(this.request_);
   let adsRenderingSettings = new google.ima.AdsRenderingSettings();
   adsRenderingSettings.playAdsAfterTime = this.currentContentTime_;
 
@@ -188,7 +183,6 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
  */
 Player.prototype.onContentPauseRequested_ = function() {
   console.log("Player onContentPauseRequested_");
-  console.log(this.request_);
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
 };
@@ -199,7 +193,6 @@ Player.prototype.onContentPauseRequested_ = function() {
  */
 Player.prototype.onContentResumeRequested_ = function() {
   console.log("Player onContentResumeRequested_");
-  console.log(this.request_);
   this.broadcast_('onContentResumeRequested');
 
   //this.playerManager_.load(this.request_);
@@ -214,17 +207,17 @@ Player.prototype.onContentResumeRequested_ = function() {
   //  debugger;
   //});
 
-  this.playerManager_.load(this.request_).then(() => {
-    this.seek_(this.currentContentTime_);
-  });
-
-  //console.log('starting sleep 1');
-  //sleep(10000).then(() => {
-  //  console.log('ending sleep 1');
-  //  this.playerManager_.load(this.request_).then(() => {
-  //    this.seek_(this.currentContentTime_);
-  //  });
+  //this.playerManager_.load(this.request_).then(() => {
+  //  this.seek_(this.currentContentTime_);
   //});
+
+  console.log('starting sleep 1');
+  sleep(10000).then(() => {
+    console.log('ending sleep 1');
+    this.playerManager_.load(this.request_).then(() => {
+      this.seek_(this.currentContentTime_);
+    });
+  });
 };
 
 /**
@@ -246,7 +239,6 @@ Player.prototype.onAllAdsCompleted_ = function() {
  */
 Player.prototype.requestAd_ = function(adTag, currentTime) {
   console.log("Player requestAd_");
-  console.log(this.request_);
   if (currentTime != 0) {
     this.currentContentTime_ = currentTime;
   }
