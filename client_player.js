@@ -121,10 +121,20 @@ Player.prototype.broadcast_ = function(message) {
 Player.prototype.initIMA_ = function() {
   console.log("Player initIMA_");
   this.currentContentTime_ = -1;
-  let adDisplayContainer = new google.ima.AdDisplayContainer(
-      document.getElementById('adContainer'), this.mediaElement_);
-  adDisplayContainer.initialize();
+
+  //start
+  this.adContainer_ = document.getElementById('adContainer');
+  this.adDisplayContainer_ = new google.ima.AdDisplayContainer(
+      this.adContainer, this.mediaElement_);
+  this.adDisplayContainer.initialize();
   this.adsLoader_ = new google.ima.AdsLoader(adDisplayContainer);
+  //end
+
+  //let adDisplayContainer = new google.ima.AdDisplayContainer(
+  //    document.getElementById('adContainer'), this.mediaElement_);
+  //adDisplayContainer.initialize();
+  //this.adsLoader_ = new google.ima.AdsLoader(adDisplayContainer);
+
   this.adsLoader_.getSettings().setPlayerType('cast/client-side');
   this.adsLoader_.addEventListener(
       google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
@@ -206,8 +216,14 @@ Player.prototype.onContentResumeRequested_ = function() {
   console.log("Player onContentResumeRequested_");
   this.broadcast_('onContentResumeRequested');
 
-  //this.playerManager_.load(this.request_);
-  //this.seek_(this.currentContentTime_);
+  let videoDisplay = this.adDisplayContainer_.getVideoDisplay();
+  console.log("is paused:");
+  console.log(videoDisplay.isPaused());
+  console.log("is ended:");
+  console.log(videoDisplay.isEnded());
+
+  this.playerManager_.load(this.request_);
+  this.seek_(this.currentContentTime_);
 
   //debugger;
   //this.playerManager_.load(this.request_).then(() => {
@@ -222,13 +238,13 @@ Player.prototype.onContentResumeRequested_ = function() {
   //  this.seek_(this.currentContentTime_);
   //});
 
-  console.log('starting sleep 1');
-  sleep(10000).then(() => {
-    console.log('ending sleep 1');
-    this.playerManager_.load(this.request_).then(() => {
-      this.seek_(this.currentContentTime_);
-    });
-  });
+  //console.log('starting sleep 1');
+  //sleep(10000).then(() => {
+  //  console.log('ending sleep 1');
+  //  this.playerManager_.load(this.request_).then(() => {
+  //    this.seek_(this.currentContentTime_);
+  //  });
+  //});
 
 };
 
@@ -238,9 +254,9 @@ Player.prototype.onContentResumeRequested_ = function() {
  */
 Player.prototype.onAllAdsCompleted_ = function() {
   console.log("Player onAllAdsCompleted_");
-  //if (this.adsManager_) {
-  //  this.adsManager_.destroy();
-  //}
+  if (this.adsManager_) {
+    this.adsManager_.destroy();
+  }
 };
 
 /**
