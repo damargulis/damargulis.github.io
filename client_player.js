@@ -205,6 +205,10 @@ Player.prototype.onContentResumeRequested_ = function() {
 
   this.playerManager_.load(this.request_).then(() => {
     this.seek_(this.currentContentTime_);
+  }).then(() => {
+    console.log("finished?");
+  }).catch((err) => {
+    debugger;
   });
 
   //console.log('starting sleep 1');
