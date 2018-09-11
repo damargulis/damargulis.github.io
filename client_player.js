@@ -202,7 +202,7 @@ Player.prototype.onContentResumeRequested_ = function() {
   //this.seek_(this.currentContentTime_);
 
   this.playerManager_.play();
-  this.seek_(this.currentContentTime_);
+  //this.seek_(this.currentContentTime_);
 
   //debugger;
   //this.playerManager_.load(this.request_).then(() => {
