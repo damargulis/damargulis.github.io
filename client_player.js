@@ -85,7 +85,7 @@ Player.prototype.setupCallbacks_ = function() {
         if (!this.request_) {
           self.initIMA_();
         }
-        if (this.request_.requestId != request.requestId) {
+        if (this.request_ && this.request_.requestId != request.requestId) {
           console.log("Request id changed");
         }
         this.request_ = request;
