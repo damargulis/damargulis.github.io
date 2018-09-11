@@ -97,7 +97,7 @@ Player.prototype.setupCallbacks_ = function() {
           console.log("Request id changed");
         }
         this.request_ = request;
-        //this.playerManager_.pause();
+        this.playerManager_.pause();
         console.log('finished message intercept');
         return request
       });
