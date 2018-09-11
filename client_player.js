@@ -86,7 +86,7 @@ Player.prototype.setupCallbacks_ = function() {
           self.initIMA_();
         }
         this.request_ = request;
-        this.playerManager_.pause();
+        //this.playerManager_.pause();
         console.log('finished message intercept');
         return request
       });
