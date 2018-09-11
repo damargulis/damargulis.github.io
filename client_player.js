@@ -85,6 +85,9 @@ Player.prototype.setupCallbacks_ = function() {
         if (!this.request_) {
           self.initIMA_();
         }
+        if (this.request_.requestId != request.requestId) {
+          console.log("Request id changed");
+        }
         this.request_ = request;
         this.playerManager_.pause();
         console.log('finished message intercept');
@@ -195,7 +198,6 @@ Player.prototype.onContentResumeRequested_ = function() {
   console.log("Player onContentResumeRequested_");
   this.broadcast_('onContentResumeRequested');
 
-  debugger;
   this.playerManager_.load(this.request_);
   this.seek_(this.currentContentTime_);
 
