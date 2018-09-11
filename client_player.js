@@ -122,18 +122,10 @@ Player.prototype.initIMA_ = function() {
   console.log("Player initIMA_");
   this.currentContentTime_ = -1;
 
-  //start
-  this.adContainer_ = document.getElementById('adContainer');
-  this.adDisplayContainer_ = new google.ima.AdDisplayContainer(
-      this.adContainer_, this.mediaElement_);
-  this.adDisplayContainer_.initialize();
-  this.adsLoader_ = new google.ima.AdsLoader(this.adDisplayContainer_);
-  //end
-
-  //let adDisplayContainer = new google.ima.AdDisplayContainer(
-  //    document.getElementById('adContainer'), this.mediaElement_);
-  //adDisplayContainer.initialize();
-  //this.adsLoader_ = new google.ima.AdsLoader(adDisplayContainer);
+  let adDisplayContainer = new google.ima.AdDisplayContainer(
+      document.getElementById('adContainer'), this.mediaElement_);
+  adDisplayContainer.initialize();
+  this.adsLoader_ = new google.ima.AdsLoader(adDisplayContainer);
 
   this.adsLoader_.getSettings().setPlayerType('cast/client-side');
   this.adsLoader_.addEventListener(
@@ -215,12 +207,6 @@ Player.prototype.onContentPauseRequested_ = function() {
 Player.prototype.onContentResumeRequested_ = function() {
   console.log("Player onContentResumeRequested_");
   this.broadcast_('onContentResumeRequested');
-
-  let videoDisplay = this.adDisplayContainer_.getVideoDisplay();
-  console.log("is paused:");
-  console.log(videoDisplay.isPaused());
-  console.log("is ended:");
-  console.log(videoDisplay.isEnded());
 
   this.playerManager_.load(this.request_);
   this.seek_(this.currentContentTime_);
