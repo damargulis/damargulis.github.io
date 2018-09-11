@@ -125,9 +125,9 @@ Player.prototype.initIMA_ = function() {
   //start
   this.adContainer_ = document.getElementById('adContainer');
   this.adDisplayContainer_ = new google.ima.AdDisplayContainer(
-      this.adContainer, this.mediaElement_);
-  this.adDisplayContainer.initialize();
-  this.adsLoader_ = new google.ima.AdsLoader(adDisplayContainer);
+      this.adContainer_, this.mediaElement_);
+  this.adDisplayContainer_.initialize();
+  this.adsLoader_ = new google.ima.AdsLoader(this.adDisplayContainer_);
   //end
 
   //let adDisplayContainer = new google.ima.AdDisplayContainer(
