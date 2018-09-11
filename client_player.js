@@ -222,13 +222,21 @@ Player.prototype.onContentResumeRequested_ = function() {
   //  this.seek_(this.currentContentTime_);
   //});
 
-  console.log('starting sleep 1');
-  sleep(100).then(() => {
-    console.log('ending sleep 1');
-    this.playerManager_.load(this.request_).then(() => {
-      this.seek_(this.currentContentTime_);
-    });
-  });
+  //console.log('starting sleep 1');
+  //sleep(100).then(() => {
+  //  console.log('ending sleep 1');
+  //  this.playerManager_.load(this.request_).then(() => {
+  //    this.seek_(this.currentContentTime_);
+  //  });
+  //});
+  //
+
+  if (this.adsManager_) {
+    this.adsManager_.destroy();
+  }
+  this.playerManager_.load(this.request_);
+  this.seek_(this.currentContentTime_);
+
 };
 
 /**
@@ -237,9 +245,9 @@ Player.prototype.onContentResumeRequested_ = function() {
  */
 Player.prototype.onAllAdsCompleted_ = function() {
   console.log("Player onAllAdsCompleted_");
-  if (this.adsManager_) {
-    this.adsManager_.destroy();
-  }
+  //if (this.adsManager_) {
+  //  this.adsManager_.destroy();
+  //}
 };
 
 /**
