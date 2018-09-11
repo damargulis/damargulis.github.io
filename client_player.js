@@ -86,7 +86,7 @@ Player.prototype.setupCallbacks_ = function() {
           self.initIMA_();
         }
         this.request_ = request;
-        //this.playerManager_.pause();
+        this.playerManager_.pause();
         console.log('finished message intercept');
         return request
       });
@@ -195,6 +195,7 @@ Player.prototype.onContentResumeRequested_ = function() {
   console.log("Player onContentResumeRequested_");
   this.broadcast_('onContentResumeRequested');
 
+  debugger;
   this.playerManager_.load(this.request_);
   this.seek_(this.currentContentTime_);
 
