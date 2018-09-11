@@ -26,6 +26,10 @@ let Player = function() {
   console.log("Player constructor");
   this.context_ = cast.framework.CastReceiverContext.getInstance();
   this.playerManager_ = this.context_.getPlayerManager();
+  this.playerManager_.addEventListener(cast.framework.events.category.CORE, evt => {
+    console.log("Player Manager event");
+    console.log(evt);
+  });
   this.mediaElement_ = document.getElementById('player').getMediaElement();
 
   const options = new cast.framework.CastReceiverOptions();
@@ -201,9 +205,6 @@ Player.prototype.onContentResumeRequested_ = function() {
   //this.playerManager_.load(this.request_);
   //this.seek_(this.currentContentTime_);
 
-  this.playerManager_.play();
-  //this.seek_(this.currentContentTime_);
-
   //debugger;
   //this.playerManager_.load(this.request_).then(() => {
   //  this.seek_(this.currentContentTime_);
@@ -217,13 +218,13 @@ Player.prototype.onContentResumeRequested_ = function() {
   //  this.seek_(this.currentContentTime_);
   //});
 
-  //console.log('starting sleep 1');
-  //sleep(10000).then(() => {
-  //  console.log('ending sleep 1');
-  //  this.playerManager_.load(this.request_).then(() => {
-  //    this.seek_(this.currentContentTime_);
-  //  });
-  //});
+  console.log('starting sleep 1');
+  sleep(10000).then(() => {
+    console.log('ending sleep 1');
+    this.playerManager_.load(this.request_).then(() => {
+      this.seek_(this.currentContentTime_);
+    });
+  });
 };
 
 /**
