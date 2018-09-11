@@ -30,6 +30,10 @@ let Player = function() {
     console.log("Player Manager event");
     console.log(evt);
   });
+  this.playerManager_.addEventListener(cast.framework.events.category.DEBUG, evt => {
+    console.log("Player Manager event");
+    console.log(evt);
+  });
   this.mediaElement_ = document.getElementById('player').getMediaElement();
 
   const options = new cast.framework.CastReceiverOptions();
