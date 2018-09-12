@@ -116,9 +116,12 @@ Player.prototype.setupCallbacks_ = function() {
       });
 
   this.playerManager_.addEventListener(
-      cast.framework.events.EventType.CLIP_ENDED, (evt) => {
-        console.log("CLIP ENDED EVENT!!!!!!!!!!!!");
+      cast.framework.events.EventType.MEDIA_FINISHED, (evt) => {
+        console.log("MEDIA_FINISHED EVENT!!!!!!!!!!!!");
         console.log(evt);
+        let player = document.getElementById('player');
+        let castPlayer = player.shadowRoot.querySelector('#castPlayer');
+        castPlayer.setAttribute('state', cast.framework.messages.PlayerState.PLAYING);
       });
 
 };
