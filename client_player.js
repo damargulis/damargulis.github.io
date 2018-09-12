@@ -253,6 +253,7 @@ Player.prototype.onAllAdsCompleted_ = function() {
  */
 Player.prototype.requestAd_ = function(adTag, currentTime) {
   console.log("Player requestAd_");
+  this.playerManager_.pause();
   if (currentTime != 0) {
     this.currentContentTime_ = currentTime;
   }
