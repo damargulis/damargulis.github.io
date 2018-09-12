@@ -101,6 +101,24 @@ Player.prototype.setupCallbacks_ = function() {
         console.log('finished message intercept');
         return request
       });
+
+  this.playerManager_.addEventListener(
+      cast.framework.events.EventType.CLIP_ENDED, (a, b, c) => {
+        console.log("CLIP ENDED EVENT!!!!!!!!!!!!");
+        console.log(a);
+        console.log(b);
+        console.log(c);
+      });
+
+  this.playerManager_.setMessageInterceptor(
+      cast.framework.events.EventType.CLIP_ENDED, (a, b, c) => {
+        console.log("CLIP ENDED INTERCEPT!!!!!!!");
+        console.log(a);
+        console.log(b);
+        console.log(c);
+        return a;
+      });
+
 };
 
 /**
