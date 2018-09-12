@@ -93,30 +93,32 @@ Player.prototype.setupCallbacks_ = function() {
         if (!this.request_) {
           self.initIMA_();
         }
-        if (this.request_ && this.request_.requestId != request.requestId) {
-          console.log("Request id changed");
-        }
         this.request_ = request;
         //this.playerManager_.pause();
         console.log('finished message intercept');
         return request
       });
 
-  this.playerManager_.addEventListener(
-      cast.framework.events.EventType.CLIP_ENDED, (a, b, c) => {
-        console.log("CLIP ENDED EVENT!!!!!!!!!!!!");
-        console.log(a);
-        console.log(b);
-        console.log(c);
+  this.playerManager_.setMessageInterceptor(
+      cast.framework.messages.MessageType.PAUSE,
+      (evt) => {
+        console.log("PAUSE MESSAGE INTERCEPTOR");
+        console.log(evt);
+        return evt;
       });
 
   this.playerManager_.setMessageInterceptor(
-      cast.framework.events.EventType.CLIP_ENDED, (a, b, c) => {
-        console.log("CLIP ENDED INTERCEPT!!!!!!!");
-        console.log(a);
-        console.log(b);
-        console.log(c);
-        return a;
+      cast.framework.messages.MessageType.STOP,
+      (evt) => {
+        console.log("STOP MESSAGE INTERCEPTOR");
+        console.log(evt);
+        return evt;
+      });
+
+  this.playerManager_.addEventListener(
+      cast.framework.events.EventType.CLIP_ENDED, (evt) => {
+        console.log("CLIP ENDED EVENT!!!!!!!!!!!!");
+        console.log(evt);
       });
 
 };
