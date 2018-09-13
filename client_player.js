@@ -49,7 +49,6 @@ let Player = function() {
       cast.framework.ui.PlayerDataEventType.STATE_CHANGED,
       e => {
         switch(e.value) {
-          console.log(e.value);
           case cast.framework.ui.State.LAUNCHING:
             console.log("PLAYER DATA BINDER LAUNCHING");
             break;
