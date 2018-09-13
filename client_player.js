@@ -254,7 +254,7 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
  */
 Player.prototype.onContentPauseRequested_ = function() {
   console.log("Player onContentPauseRequested_");
-  this.playerManager_.pause();
+  this.playerManager_.stop();
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
 };
