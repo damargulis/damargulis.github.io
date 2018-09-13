@@ -153,10 +153,10 @@ Player.prototype.setupCallbacks_ = function() {
         //castPlayer.setAttribute('state', cast.framework.ui.State.PLAYING);
       });
 
-  this.mediaElement_.addEventListener('ended', (evt) => {
-    console.log('MEDIA ELEMENT ENDED EVENT!');
-    evt.stopImmediatePropagation();
-  });
+  //this.mediaElement_.addEventListener('ended', (evt) => {
+  //  console.log('MEDIA ELEMENT ENDED EVENT!');
+  //  evt.stopImmediatePropagation();
+  //});
 };
 
 /**
