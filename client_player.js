@@ -151,7 +151,7 @@ Player.prototype.setupCallbacks_ = function() {
         console.log(evt);
         let player = document.getElementById('player');
         let castPlayer = player.shadowRoot.querySelector('#castPlayer');
-        castPlayer.setAttribute('state', 'playing');
+        castPlayer.setAttribute('state', cast.framework.ui.State.PLAYING);
       });
 
 };
