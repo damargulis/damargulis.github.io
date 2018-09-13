@@ -119,9 +119,9 @@ Player.prototype.setupCallbacks_ = function() {
       cast.framework.events.EventType.MEDIA_FINISHED, (evt) => {
         console.log("MEDIA_FINISHED EVENT!!!!!!!!!!!!");
         console.log(evt);
-        let player = document.getElementById('player');
-        let castPlayer = player.shadowRoot.querySelector('#castPlayer');
-        castPlayer.setAttribute('state', 'playing');
+        //let player = document.getElementById('player');
+        //let castPlayer = player.shadowRoot.querySelector('#castPlayer');
+        //castPlayer.setAttribute('state', 'playing');
       });
 
 };
@@ -276,7 +276,7 @@ Player.prototype.onAllAdsCompleted_ = function() {
  */
 Player.prototype.requestAd_ = function(adTag, currentTime) {
   console.log("Player requestAd_");
-  this.playerManager_.pause();
+  //this.playerManager_.pause();
   if (currentTime != 0) {
     this.currentContentTime_ = currentTime;
   }
