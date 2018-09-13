@@ -222,6 +222,11 @@ Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
       this.onContentResumeRequested_.bind(this));
 
   try {
+    console.log("MEDIA ELEMENT:");
+    console.log(this.mediaElement_);
+    console.log("MEIDA ELEMENT DIMENSIONS:");
+    console.log(this.mediaElement_.width);
+    console.log(this.mediaElement_.height);
     this.adsManager_.init(this.mediaElement_.width, this.mediaElement_.height,
         google.ima.ViewMode.FULLSCREEN);
     this.adsManager_.start();
