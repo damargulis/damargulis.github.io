@@ -148,9 +148,9 @@ Player.prototype.setupCallbacks_ = function() {
       cast.framework.events.EventType.MEDIA_FINISHED, (evt) => {
         console.log("MEDIA_FINISHED EVENT!!!!!!!!!!!!");
         console.log(evt);
-        let player = document.getElementById('player');
-        let castPlayer = player.shadowRoot.querySelector('#castPlayer');
-        castPlayer.setAttribute('state', cast.framework.ui.State.PLAYING);
+        //let player = document.getElementById('player');
+        //let castPlayer = player.shadowRoot.querySelector('#castPlayer');
+        //castPlayer.setAttribute('state', cast.framework.ui.State.PLAYING);
       });
 
 };
