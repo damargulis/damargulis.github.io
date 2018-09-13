@@ -153,10 +153,10 @@ Player.prototype.setupCallbacks_ = function() {
         //castPlayer.setAttribute('state', cast.framework.ui.State.PLAYING);
       });
 
-  this.mediaElement_.addEventListener('ended', (evt) => {
-    console.log('MEDIA ELEMENT ENDED EVENT!');
-    evt.stopImmediatePropagation();
-  });
+  //this.mediaElement_.addEventListener('ended', (evt) => {
+  //  console.log('MEDIA ELEMENT ENDED EVENT!');
+  //  evt.stopImmediatePropagation();
+  //});
 };
 
 /**
@@ -178,8 +178,10 @@ Player.prototype.initIMA_ = function() {
   console.log("Player initIMA_");
   this.currentContentTime_ = -1;
 
+  //let adDisplayContainer = new google.ima.AdDisplayContainer(
+  //    document.getElementById('adContainer'), this.mediaElement_);
   let adDisplayContainer = new google.ima.AdDisplayContainer(
-      document.getElementById('adContainer'), this.mediaElement_);
+      document.getElementById('adContainer'));
   adDisplayContainer.initialize();
   this.adsLoader_ = new google.ima.AdsLoader(adDisplayContainer);
 
