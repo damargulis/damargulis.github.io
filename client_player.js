@@ -122,6 +122,7 @@ Player.prototype.setupCallbacks_ = function() {
         //let player = document.getElementById('player');
         //let castPlayer = player.shadowRoot.querySelector('#castPlayer');
         //castPlayer.setAttribute('state', 'playing');
+        this.mediaElement_.setAttribute('state', 'playing');
       });
 
 };
@@ -219,6 +220,7 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
  */
 Player.prototype.onContentPauseRequested_ = function() {
   console.log("Player onContentPauseRequested_");
+  this.playerManager_.pause();
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
 };
@@ -276,7 +278,6 @@ Player.prototype.onAllAdsCompleted_ = function() {
  */
 Player.prototype.requestAd_ = function(adTag, currentTime) {
   console.log("Player requestAd_");
-  //this.playerManager_.pause();
   if (currentTime != 0) {
     this.currentContentTime_ = currentTime;
   }
