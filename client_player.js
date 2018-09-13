@@ -41,6 +41,35 @@ let Player = function() {
   options.customNamespaces = {};
   options.customNamespaces[NAMESPACE] =
       cast.framework.system.MessageType.STRING;
+
+  const playerData = {};
+  const playerDataBinder = new cast.framework.ui.PlayerDataBinder(playerData);
+
+  playerDataBinder.addEventListener(
+      cast.framework.ui.PlayerDataEventType.STATE_CHANGED,
+      e => {
+        switch(e.value) {
+          case cast.framework.ui.State.LAUNCHING:
+            console.log("PLAYER DATA BINDER LAUNCHING");
+            break;
+          case cast.framework.ui.State.IDLE:
+            console.log("PLAYER DATA BINDER IDLE");
+            break;
+          case cast.framework.ui.State.LOADING:
+            console.log("PLAYER DATA BINDER LOADING");
+            break;
+          case cast.framework.ui.State.BUFFERING:
+            console.log("PLAYER DATA BINDER BUFFERING");
+            break;
+          case cast.framework.ui.State.PAUSED:
+            console.log("PLAYER DATA BINDER PAUSED");
+            break;
+          case cast.framework.ui.State.PLAYING:
+            console.log("PLAYER DATA BINDER PLAYING");
+            break;
+        }
+      });
+
   this.context_.start(options);
 
   this.setupCallbacks_();
@@ -119,10 +148,9 @@ Player.prototype.setupCallbacks_ = function() {
       cast.framework.events.EventType.MEDIA_FINISHED, (evt) => {
         console.log("MEDIA_FINISHED EVENT!!!!!!!!!!!!");
         console.log(evt);
-        //let player = document.getElementById('player');
-        //let castPlayer = player.shadowRoot.querySelector('#castPlayer');
-        //castPlayer.setAttribute('state', 'playing');
-        this.mediaElement_.setAttribute('state', 'playing');
+        let player = document.getElementById('player');
+        let castPlayer = player.shadowRoot.querySelector('#castPlayer');
+        castPlayer.setAttribute('state', 'playing');
       });
 
 };
