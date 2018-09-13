@@ -155,6 +155,7 @@ Player.prototype.setupCallbacks_ = function() {
 
   this.mediaElement_.addEventListener('ended', (evt) => {
     console.log('MEDIA ELEMENT ENDED EVENT!');
+    evt.stopImmediatePropagation();
   });
 };
 
