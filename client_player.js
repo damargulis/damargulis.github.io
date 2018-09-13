@@ -227,7 +227,10 @@ Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
     console.log("MEIDA ELEMENT DIMENSIONS:");
     console.log(this.mediaElement_.width);
     console.log(this.mediaElement_.height);
-    this.adsManager_.init(this.mediaElement_.width, this.mediaElement_.height,
+    //this.adsManager_.init(this.mediaElement_.width, this.mediaElement_.height,
+    //    google.ima.ViewMode.FULLSCREEN);
+    this.adsManager_.init(google.ima.AdsRenderingSettings.AUTO_SCALE,
+        google.ima.AdsRenderingSettings.AUTO_SCALE,
         google.ima.ViewMode.FULLSCREEN);
     this.adsManager_.start();
   } catch (adError) {
