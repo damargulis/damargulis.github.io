@@ -23,12 +23,16 @@ Ads.prototype.initialUserAction = function() {
 }
 
 Ads.prototype.requestAds = function() {
+        console.log("Ads.requestAds");
 	const adsRequest = new google.ima.AdsRequest();
+        console.log("created ads request object");
 
 	// adsRequest.adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=';
 	adsRequest.adTagUrl = 'https://raw.githubusercontent.com/InteractiveAdvertisingBureau/VAST_Samples/master/VAST%204.0%20Samples/Inline_Linear_Tag-test.xml';
 
+        console.log("calling adsloaded.requestAds");
 	this.adsLoader.requestAds(adsRequest);
+        console.log('finsihed adsloader.requestAds');
 }
 
 Ads.prototype.contentEnded = function() {
@@ -66,7 +70,9 @@ function Application(containerDiv) {
 }
 
 Application.prototype.requestAd = function() {
+        console.log("APPLICATION.requstAd (iniframe)");
 	if (!this.adsDone) {
+                console.log("!this.adsDone");
 		// The user clicked/tapped - inform the ads controller that this code
 		// is being run in a user action thread.
 		this.ads.initialUserAction();
@@ -78,8 +84,10 @@ Application.prototype.requestAd = function() {
 		// for more information.
 		this.ads.requestAds();
 		this.adsDone = true;
+                console.log("finished application.requestAd");
 		return;
 	}
+        console.log("this.adsDone");
 }
 
 Application.prototype.onAdManagerLoaded = function() {
@@ -91,16 +99,20 @@ Application.prototype.onAdManagerLoaded = function() {
 function SDK() {}
 
 SDK.prototype.init = function () {
+        console.log("CALLING INIT (IN IFRAME)");
 	const containerDiv = document.createElement('div');
 	containerDiv.style.display = 'none';
 
 	document.body.appendChild(containerDiv);
 
 	this.application = new Application(containerDiv);
+        console.log("FINISHED INIT (IN IFRAME)");
 }
 
 SDK.prototype.requestAd = function() {
+        console.log("CALLING REQUEST AD (IN IFRAME)");
 	this.application.requestAd();
+        console.log("FINISHED REQUEST AD (IN IFRAME)");
 }
 
 window.adSDK = new SDK();
