@@ -23,17 +23,8 @@ const NAMESPACE = 'urn:x-cast:com.google.ads.ima.cast';
  *
  */
 let Player = function() {
-  console.log("Player constructor");
   this.context_ = cast.framework.CastReceiverContext.getInstance();
   this.playerManager_ = this.context_.getPlayerManager();
-  this.playerManager_.addEventListener(cast.framework.events.category.CORE, evt => {
-    console.log("Player Manager event");
-    console.log(evt);
-  });
-  this.playerManager_.addEventListener(cast.framework.events.category.DEBUG, evt => {
-    console.log("Player Manager event");
-    console.log(evt);
-  });
   this.mediaElement_ = document.getElementById('player').getMediaElement();
 
   const options = new cast.framework.CastReceiverOptions();
@@ -41,35 +32,6 @@ let Player = function() {
   options.customNamespaces = {};
   options.customNamespaces[NAMESPACE] =
       cast.framework.system.MessageType.STRING;
-
-  const playerData = {};
-  const playerDataBinder = new cast.framework.ui.PlayerDataBinder(playerData);
-
-  playerDataBinder.addEventListener(
-      cast.framework.ui.PlayerDataEventType.STATE_CHANGED,
-      e => {
-        switch(e.value) {
-          case cast.framework.ui.State.LAUNCHING:
-            console.log("PLAYER DATA BINDER LAUNCHING");
-            break;
-          case cast.framework.ui.State.IDLE:
-            console.log("PLAYER DATA BINDER IDLE");
-            break;
-          case cast.framework.ui.State.LOADING:
-            console.log("PLAYER DATA BINDER LOADING");
-            break;
-          case cast.framework.ui.State.BUFFERING:
-            console.log("PLAYER DATA BINDER BUFFERING");
-            break;
-          case cast.framework.ui.State.PAUSED:
-            console.log("PLAYER DATA BINDER PAUSED");
-            break;
-          case cast.framework.ui.State.PLAYING:
-            console.log("PLAYER DATA BINDER PLAYING");
-            break;
-        }
-      });
-
   this.context_.start(options);
 
   this.setupCallbacks_();
@@ -80,7 +42,6 @@ let Player = function() {
  * @private
  */
 Player.prototype.setupCallbacks_ = function() {
-  console.log("Player setupCallbacks_");
   let self = this;
 
   // Chromecast device is disconnected from sender app.
@@ -93,7 +54,6 @@ Player.prototype.setupCallbacks_ = function() {
   // where the first substring indicates the function to be called and the
   // following substrings are the parameters to be passed to the function.
   this.context_.addCustomMessageListener(NAMESPACE, (event) => {
-    console.log("customMessageListener");
     console.log(event.data);
     let message = event.data.split(',');
     let method = message[0];
@@ -118,45 +78,16 @@ Player.prototype.setupCallbacks_ = function() {
   this.playerManager_.setMessageInterceptor(
       cast.framework.messages.MessageType.LOAD,
       (request) => {
-        console.log('load message received?');
         if (!this.request_) {
           self.initIMA_();
         }
         this.request_ = request;
-        //this.playerManager_.pause();
-        console.log('finished message intercept');
-        return request
+        if (this.playerManager_.getPlayerState() ===
+            cast.framework.messages.PlayerState.PLAYING) {
+          this.playerManager_.pause();
+        }
+        return request;
       });
-
-  this.playerManager_.setMessageInterceptor(
-      cast.framework.messages.MessageType.PAUSE,
-      (evt) => {
-        console.log("PAUSE MESSAGE INTERCEPTOR");
-        console.log(evt);
-        return evt;
-      });
-
-  this.playerManager_.setMessageInterceptor(
-      cast.framework.messages.MessageType.STOP,
-      (evt) => {
-        console.log("STOP MESSAGE INTERCEPTOR");
-        console.log(evt);
-        return evt;
-      });
-
-  this.playerManager_.addEventListener(
-      cast.framework.events.EventType.MEDIA_FINISHED, (evt) => {
-        console.log("MEDIA_FINISHED EVENT!!!!!!!!!!!!");
-        console.log(evt);
-        //let player = document.getElementById('player');
-        //let castPlayer = player.shadowRoot.querySelector('#castPlayer');
-        //castPlayer.setAttribute('state', cast.framework.ui.State.PLAYING);
-      });
-
-  //this.mediaElement_.addEventListener('ended', (evt) => {
-  //  console.log('MEDIA ELEMENT ENDED EVENT!');
-  //  evt.stopImmediatePropagation();
-  //});
 };
 
 /**
@@ -165,8 +96,6 @@ Player.prototype.setupCallbacks_ = function() {
  * @private
  */
 Player.prototype.broadcast_ = function(message) {
-  console.log("Player broadcast_");
-  console.log(message);
   this.context_.sendCustomMessage(NAMESPACE, undefined, message);
 };
 
@@ -175,16 +104,11 @@ Player.prototype.broadcast_ = function(message) {
  * @private
  */
 Player.prototype.initIMA_ = function() {
-  console.log("Player initIMA_");
   this.currentContentTime_ = -1;
-
-  //let adDisplayContainer = new google.ima.AdDisplayContainer(
-  //    document.getElementById('adContainer'), this.mediaElement_);
   let adDisplayContainer = new google.ima.AdDisplayContainer(
-      document.getElementById('adContainer'));
+      document.getElementById('adContainer'), this.mediaElement_);
   adDisplayContainer.initialize();
   this.adsLoader_ = new google.ima.AdsLoader(adDisplayContainer);
-
   this.adsLoader_.getSettings().setPlayerType('cast/client-side');
   this.adsLoader_.addEventListener(
       google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
@@ -202,7 +126,6 @@ Player.prototype.initIMA_ = function() {
  * @private
  */
 Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
-  console.log("Player onAdsManagerLoaded_");
   let adsRenderingSettings = new google.ima.AdsRenderingSettings();
   adsRenderingSettings.playAdsAfterTime = this.currentContentTime_;
 
@@ -222,15 +145,7 @@ Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
       this.onContentResumeRequested_.bind(this));
 
   try {
-    console.log("MEDIA ELEMENT:");
-    console.log(this.mediaElement_);
-    console.log("MEIDA ELEMENT DIMENSIONS:");
-    console.log(this.mediaElement_.width);
-    console.log(this.mediaElement_.height);
-    //this.adsManager_.init(this.mediaElement_.width, this.mediaElement_.height,
-    //    google.ima.ViewMode.FULLSCREEN);
-    this.adsManager_.init(google.ima.AdsRenderingSettings.AUTO_SCALE,
-        google.ima.AdsRenderingSettings.AUTO_SCALE,
+    this.adsManager_.init(this.mediaElement_.width, this.mediaElement_.height,
         google.ima.ViewMode.FULLSCREEN);
     this.adsManager_.start();
   } catch (adError) {
@@ -245,7 +160,6 @@ Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
  * @private
  */
 Player.prototype.onAdError_ = function(adErrorEvent) {
-  console.log("Player onAdError_");
   this.broadcast_('Ad Error: ' + adErrorEvent.getError().toString());
   // Handle the error logging.
   if (this.adsManager_) {
@@ -261,8 +175,6 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
  * @private
  */
 Player.prototype.onContentPauseRequested_ = function() {
-  console.log("Player onContentPauseRequested_");
-  this.playerManager_.stop();
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
 };
@@ -272,33 +184,10 @@ Player.prototype.onContentPauseRequested_ = function() {
  * @private
  */
 Player.prototype.onContentResumeRequested_ = function() {
-  console.log("Player onContentResumeRequested_");
   this.broadcast_('onContentResumeRequested');
 
   this.playerManager_.load(this.request_);
   this.seek_(this.currentContentTime_);
-
-  //debugger;
-  //this.playerManager_.load(this.request_).then(() => {
-  //  this.seek_(this.currentContentTime_);
-  //}).then(() => {
-  //  console.log("finished?");
-  //}).catch((err) => {
-  //  debugger;
-  //});
-
-  //this.playerManager_.load(this.request_).then(() => {
-  //  this.seek_(this.currentContentTime_);
-  //});
-
-  //console.log('starting sleep 1');
-  //sleep(10000).then(() => {
-  //  console.log('ending sleep 1');
-  //  this.playerManager_.load(this.request_).then(() => {
-  //    this.seek_(this.currentContentTime_);
-  //  });
-  //});
-
 };
 
 /**
@@ -306,7 +195,6 @@ Player.prototype.onContentResumeRequested_ = function() {
  * @private
  */
 Player.prototype.onAllAdsCompleted_ = function() {
-  console.log("Player onAllAdsCompleted_");
   if (this.adsManager_) {
     this.adsManager_.destroy();
   }
@@ -319,7 +207,6 @@ Player.prototype.onAllAdsCompleted_ = function() {
  * @private
  */
 Player.prototype.requestAd_ = function(adTag, currentTime) {
-  console.log("Player requestAd_");
   if (currentTime != 0) {
     this.currentContentTime_ = currentTime;
   }
@@ -332,20 +219,16 @@ Player.prototype.requestAd_ = function(adTag, currentTime) {
   this.adsLoader_.requestAds(adsRequest);
 };
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 /**
  * Seeks content video.
  * @param {!float} time time to seek to.
  * @private
  */
 Player.prototype.seek_ = function(time) {
-  console.log("Player seek_");
   this.currentContentTime_ = time;
-  console.log("playmanager seek");
   this.playerManager_.seek(time);
-  console.log("playermanager play");
-  this.playerManager_.play();
+  if (this.playerManager_.getPlayerState() ===
+      cast.framework.messages.PlayerState.PAUSED) {
+    this.playerManager_.play();
+  }
 };

@@ -1,3 +1,4 @@
+<html manifest="nocache.mf">
 <head>
   <title>IMA Example receiver</title>
   <link rel="stylesheet" type="text/css" href="style.css">
@@ -6,12 +7,11 @@
   <script type="text/javascript" src="client_player.js"></script>
 </head>
 <body>
-  <cast-media-player id="player"></cast-media-player>
   <div id="adContainer">
+    <cast-media-player id="player"></cast-media-player>
+    <script>
+      var player = new Player();
+    </script>
   </div>
-  <script>
-    var player = new Player();
-    //cast.framework.CastReceiverContext.getInstance().start();
-  </script>
 </body>
 </html>
