@@ -162,6 +162,8 @@ Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
  * @private
  */
 Player.prototype.onAdError_ = function(adErrorEvent) {
+  console.log('onAdError_');
+  console.log(adErrorEvent);
   this.broadcast_('Ad Error: ' + adErrorEvent.getError().toString());
   // Handle the error logging.
   if (this.adsManager_) {
@@ -177,6 +179,7 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
  * @private
  */
 Player.prototype.onContentPauseRequested_ = function() {
+  console.log('conrent pause requested');
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
 };
@@ -186,6 +189,7 @@ Player.prototype.onContentPauseRequested_ = function() {
  * @private
  */
 Player.prototype.onContentResumeRequested_ = function() {
+  console.log('content resume requeted');
   this.broadcast_('onContentResumeRequested');
 
   this.playerManager_.load(this.request_);
@@ -197,6 +201,7 @@ Player.prototype.onContentResumeRequested_ = function() {
  * @private
  */
 Player.prototype.onAllAdsCompleted_ = function() {
+  console.log('all ads completed');
   if (this.adsManager_) {
     this.adsManager_.destroy();
   }
@@ -229,10 +234,12 @@ Player.prototype.requestAd_ = function(adTag, currentTime) {
  * @private
  */
 Player.prototype.seek_ = function(time) {
+  console.log('seek');
   this.currentContentTime_ = time;
   this.playerManager_.seek(time);
   if (this.playerManager_.getPlayerState() ===
       cast.framework.messages.PlayerState.PAUSED) {
+    console.log('playing');
     this.playerManager_.play();
   }
 };
