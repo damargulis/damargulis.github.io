@@ -78,13 +78,15 @@ Player.prototype.setupCallbacks_ = function() {
   this.playerManager_.setMessageInterceptor(
       cast.framework.messages.MessageType.LOAD,
       (request) => {
+        console.log('load interceptor');
         if (!this.request_) {
           self.initIMA_();
         }
         this.request_ = request;
         if (this.playerManager_.getPlayerState() ===
             cast.framework.messages.PlayerState.PLAYING) {
-          this.playerManager_.pause();
+          //this.playerManager_.pause();
+          this.playerManager_.stop();
         }
         return request;
       });
@@ -207,6 +209,7 @@ Player.prototype.onAllAdsCompleted_ = function() {
  * @private
  */
 Player.prototype.requestAd_ = function(adTag, currentTime) {
+  console.log('requestAd_');
   if (currentTime != 0) {
     this.currentContentTime_ = currentTime;
   }
@@ -216,6 +219,7 @@ Player.prototype.requestAd_ = function(adTag, currentTime) {
   adsRequest.linearAdSlotHeight = this.mediaElement_.height;
   adsRequest.nonLinearAdSlotWidth = this.mediaElement_.width;
   adsRequest.nonLinearAdSlotHeight = this.mediaElement_.height / 3;
+  console.log('adsLoader_.requestAd');
   this.adsLoader_.requestAds(adsRequest);
 };
 
