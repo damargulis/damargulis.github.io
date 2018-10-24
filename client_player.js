@@ -108,7 +108,7 @@ Player.prototype.broadcast_ = function(message) {
 Player.prototype.initIMA_ = function() {
   this.currentContentTime_ = -1;
   let adDisplayContainer = new google.ima.AdDisplayContainer(
-      document.getElementById('adContainer'), this.mediaElement_);
+      document.getElementById('adContainer'));
   adDisplayContainer.initialize();
   this.adsLoader_ = new google.ima.AdsLoader(adDisplayContainer);
   this.adsLoader_.getSettings().setPlayerType('cast/client-side');
@@ -147,7 +147,8 @@ Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
       this.onContentResumeRequested_.bind(this));
 
   try {
-    this.adsManager_.init(this.mediaElement_.width, this.mediaElement_.height,
+    this.adsManager_.init(google.ima.AdsRenderingSettings.AUTO_SCALE,
+        google.ima.AdsRenderingSettings.AUTO_SCALE,
         google.ima.ViewMode.FULLSCREEN);
     this.adsManager_.start();
   } catch (adError) {
