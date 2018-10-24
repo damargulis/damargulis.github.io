@@ -78,15 +78,13 @@ Player.prototype.setupCallbacks_ = function() {
   this.playerManager_.setMessageInterceptor(
       cast.framework.messages.MessageType.LOAD,
       (request) => {
-        console.log('load interceptor');
         if (!this.request_) {
           self.initIMA_();
         }
         this.request_ = request;
         if (this.playerManager_.getPlayerState() ===
             cast.framework.messages.PlayerState.PLAYING) {
-          //this.playerManager_.pause();
-          this.playerManager_.stop();
+          this.playerManager_.pause();
         }
         return request;
       });
@@ -108,7 +106,7 @@ Player.prototype.broadcast_ = function(message) {
 Player.prototype.initIMA_ = function() {
   this.currentContentTime_ = -1;
   let adDisplayContainer = new google.ima.AdDisplayContainer(
-      document.getElementById('adContainer'));
+      document.getElementById('adContainer'), this.mediaElement_);
   adDisplayContainer.initialize();
   this.adsLoader_ = new google.ima.AdsLoader(adDisplayContainer);
   this.adsLoader_.getSettings().setPlayerType('cast/client-side');
@@ -147,8 +145,7 @@ Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
       this.onContentResumeRequested_.bind(this));
 
   try {
-    this.adsManager_.init(google.ima.AdsRenderingSettings.AUTO_SCALE,
-        google.ima.AdsRenderingSettings.AUTO_SCALE,
+    this.adsManager_.init(this.mediaElement_.width, this.mediaElement_.height,
         google.ima.ViewMode.FULLSCREEN);
     this.adsManager_.start();
   } catch (adError) {
@@ -163,8 +160,6 @@ Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
  * @private
  */
 Player.prototype.onAdError_ = function(adErrorEvent) {
-  console.log('onAdError_');
-  console.log(adErrorEvent);
   this.broadcast_('Ad Error: ' + adErrorEvent.getError().toString());
   // Handle the error logging.
   if (this.adsManager_) {
@@ -180,7 +175,6 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
  * @private
  */
 Player.prototype.onContentPauseRequested_ = function() {
-  console.log('content pause requested');
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
 };
@@ -190,7 +184,6 @@ Player.prototype.onContentPauseRequested_ = function() {
  * @private
  */
 Player.prototype.onContentResumeRequested_ = function() {
-  console.log('content resume requeted');
   this.broadcast_('onContentResumeRequested');
 
   this.playerManager_.load(this.request_);
@@ -202,7 +195,6 @@ Player.prototype.onContentResumeRequested_ = function() {
  * @private
  */
 Player.prototype.onAllAdsCompleted_ = function() {
-  console.log('all ads completed');
   if (this.adsManager_) {
     this.adsManager_.destroy();
   }
@@ -215,7 +207,6 @@ Player.prototype.onAllAdsCompleted_ = function() {
  * @private
  */
 Player.prototype.requestAd_ = function(adTag, currentTime) {
-  console.log('requestAd_');
   if (currentTime != 0) {
     this.currentContentTime_ = currentTime;
   }
@@ -225,7 +216,6 @@ Player.prototype.requestAd_ = function(adTag, currentTime) {
   adsRequest.linearAdSlotHeight = this.mediaElement_.height;
   adsRequest.nonLinearAdSlotWidth = this.mediaElement_.width;
   adsRequest.nonLinearAdSlotHeight = this.mediaElement_.height / 3;
-  console.log('adsLoader_.requestAd');
   this.adsLoader_.requestAds(adsRequest);
 };
 
@@ -235,12 +225,10 @@ Player.prototype.requestAd_ = function(adTag, currentTime) {
  * @private
  */
 Player.prototype.seek_ = function(time) {
-  console.log('seek');
   this.currentContentTime_ = time;
   this.playerManager_.seek(time);
   if (this.playerManager_.getPlayerState() ===
       cast.framework.messages.PlayerState.PAUSED) {
-    console.log('playing');
     this.playerManager_.play();
   }
 };
