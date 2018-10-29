@@ -84,7 +84,8 @@ Player.prototype.setupCallbacks_ = function() {
         this.request_ = request;
         if (this.playerManager_.getPlayerState() ===
             cast.framework.messages.PlayerState.PLAYING) {
-          this.playerManager_.pause();
+          //this.playerManager_.pause();
+          this.playerManager_stop();
         }
         return request;
       });
