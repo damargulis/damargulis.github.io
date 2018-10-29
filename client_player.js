@@ -32,7 +32,6 @@ let Player = function() {
   options.customNamespaces = {};
   options.customNamespaces[NAMESPACE] =
       cast.framework.system.MessageType.STRING;
-
   this.context_.start(options);
 
   this.setupCallbacks_();
@@ -55,6 +54,7 @@ Player.prototype.setupCallbacks_ = function() {
   // where the first substring indicates the function to be called and the
   // following substrings are the parameters to be passed to the function.
   this.context_.addCustomMessageListener(NAMESPACE, (event) => {
+    console.log(event.data);
     let message = event.data.split(',');
     let method = message[0];
     switch (method) {
@@ -82,7 +82,11 @@ Player.prototype.setupCallbacks_ = function() {
           self.initIMA_();
         }
         this.request_ = request;
-        return request
+        if (this.playerManager_.getPlayerState() ===
+            cast.framework.messages.PlayerState.PLAYING) {
+          this.playerManager_.pause();
+        }
+        return request;
       });
 };
 
@@ -101,12 +105,10 @@ Player.prototype.broadcast_ = function(message) {
  */
 Player.prototype.initIMA_ = function() {
   this.currentContentTime_ = -1;
-
   let adDisplayContainer = new google.ima.AdDisplayContainer(
-      document.getElementById('adContainer'));
+      document.getElementById('adContainer'), this.mediaElement_);
   adDisplayContainer.initialize();
   this.adsLoader_ = new google.ima.AdsLoader(adDisplayContainer);
-
   this.adsLoader_.getSettings().setPlayerType('cast/client-side');
   this.adsLoader_.addEventListener(
       google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
@@ -143,8 +145,7 @@ Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
       this.onContentResumeRequested_.bind(this));
 
   try {
-    this.adsManager_.init(google.ima.AdsRenderingSettings.AUTO_SCALE,
-        google.ima.AdsRenderingSettings.AUTO_SCALE,
+    this.adsManager_.init(this.mediaElement_.width, this.mediaElement_.height,
         google.ima.ViewMode.FULLSCREEN);
     this.adsManager_.start();
   } catch (adError) {
@@ -174,7 +175,6 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
  * @private
  */
 Player.prototype.onContentPauseRequested_ = function() {
-  this.playerManager_.stop();
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
 };
@@ -188,7 +188,6 @@ Player.prototype.onContentResumeRequested_ = function() {
 
   this.playerManager_.load(this.request_);
   this.seek_(this.currentContentTime_);
-
 };
 
 /**
@@ -228,5 +227,8 @@ Player.prototype.requestAd_ = function(adTag, currentTime) {
 Player.prototype.seek_ = function(time) {
   this.currentContentTime_ = time;
   this.playerManager_.seek(time);
-  this.playerManager_.play();
+  if (this.playerManager_.getPlayerState() ===
+      cast.framework.messages.PlayerState.PAUSED) {
+    this.playerManager_.play();
+  }
 };
