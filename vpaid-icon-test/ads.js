@@ -14,11 +14,13 @@ var Ads = function(application, videoPlayer) {
   google.ima.settings.setVpaidMode(google.ima.ImaSdkSettings.VpaidMode.INSECURE);
   // Call setLocale() to localize language text and downloaded swfs
   // google.ima.settings.setLocale('fr');
-  this.adDisplayContainer_ =
-      new google.ima.AdDisplayContainer(
-          this.videoPlayer_.adContainer,
-          this.videoPlayer_.contentPlayer,
-          this.customClickDiv_);
+  //this.adDisplayContainer_ =
+  //    new google.ima.AdDisplayContainer(
+  //        this.videoPlayer_.adContainer,
+  //        this.videoPlayer_.contentPlayer,
+  //        this.customClickDiv_);
+  this.adDisplayContainer_ = new google.ima.AdDisplayContainer(
+      this.videoPlayer_.adContainer);
   this.adsLoader_ = new google.ima.AdsLoader(this.adDisplayContainer_);
   this.adsManager_ = null;
 
