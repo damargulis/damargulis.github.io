@@ -54,7 +54,6 @@ Player.prototype.setupCallbacks_ = function() {
   // where the first substring indicates the function to be called and the
   // following substrings are the parameters to be passed to the function.
   this.context_.addCustomMessageListener(NAMESPACE, (event) => {
-    console.log(event.data);
     let message = event.data.split(',');
     let method = message[0];
     switch (method) {
@@ -82,12 +81,7 @@ Player.prototype.setupCallbacks_ = function() {
           self.initIMA_();
         }
         this.request_ = request;
-        if (this.playerManager_.getPlayerState() ===
-            cast.framework.messages.PlayerState.PLAYING) {
-          //this.playerManager_.pause();
-          this.playerManager_stop();
-        }
-        return request;
+        return request
       });
 };
 
