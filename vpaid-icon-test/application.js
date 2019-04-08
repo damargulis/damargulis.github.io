@@ -53,7 +53,8 @@ var Application = function() {
   this.setVideoEndedCallbackEnabled(true);
 };
 
-Application.prototype.SAMPLE_AD_TAG_ = 'https://s3.amazonaws.com/bob.jwplayer.com/~alex/ads/adchoices/adchoices.xml';
+//Application.prototype.SAMPLE_AD_TAG_ = 'https://s3.amazonaws.com/bob.jwplayer.com/~alex/ads/adchoices/adchoices.xml';
+Application.prototype.SAMPLE_AD_TAG_ = 'https://vastsynthesizer.appspot.com/vpaid_icon_insecure';
 
 Application.prototype.setVideoEndedCallbackEnabled = function(enable) {
   if (enable) {
