@@ -1,4 +1,3 @@
-<!--
 <!DOCTYPE html>
 <head>
   <title>Receiver Demo</title>
@@ -25,66 +24,4 @@
   </script>
 </body>
 </html>
--->
 
-<html>
-  <body>
-    <video id='vid' />
-    <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
-    <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/mediaplayer/1.0.0/media_player.js"></script>
-<script type="text/javascript">
-var mediaElement = document.getElementById('vid');
-window.mediaManager = new cast.receiver.MediaManager(mediaElement);
-
-mediaManager.onLoad = function(event) {
-  if (window.player !== null) {
-    player.unload();
-    window.player = null;
-  }
-
-  if (event.data['media'] && event.data['media']['contentId']) {
-    console.log('Starting media appliation');
-    var url = event.data['media']['contentId'];
-    console.log(url);
-    window.host = new cast.player.api.Host({'mediaElement':mediaElement, 'url':url});
-    var ext = url.substring(url.lastIndexOf('.'), url.length);
-    var initStart = event.data['media']['currentTime'] || 0;
-    var autoplay = event.data['autoplay'] || true;
-    console.log('created protocol');
-    console.log(protocol);
-    mediaElement.autoplay = autoplay;
-    host.onError = function(errCode) {
-      console.log("Fatal Error - " + errCode);
-      if (window.player) {
-        window.player.unload();
-        window.player = null;
-      }
-    }
-    console.log('overriding host method');
-    host.updateSegmentRequestInfo = function(requestInfo) {
-      console.log('add with Credentials');
-      requestInfo.withCredentials = true;
-    }
-    host.updateManifestRequestInfo = function(requestInfo) {
-      console.log('updateManifest');
-      requestInfo.withCredentials = true;
-    }
-    host.updateLicenseRequestInfo = function(requestInfo) {
-      console.log('updateLicenseRequestInfo');
-      requestInfo.withCredentials = true;
-    }
-
-    console.log("Starting Media Player Library");
-    window.player = new cast.player.api.Player(host);
-    var protocol = cast.player.api.CreateHlsStreamingProtocol(host);
-    console.log('calling load');
-    window.player.load(protocol, initStart);
-  }
-}
-window.player = null;
-console.log('Application is ready, starting system');
-window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
-castReceiverManager.start();
-</script>
-  </body>
-</html>
