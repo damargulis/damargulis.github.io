@@ -3,7 +3,6 @@
 /**
  * Entry point for the sample video player which uses media element for
  * rendering video streams.
- *
  * @this {Player}
  * @param {!HTMLMediaElement} mediaElement for video rendering.
  */
@@ -13,15 +12,10 @@ const Player = function(mediaElement) {
   this.castPlayer_ = null;
   this.seekToTimeAfterAdBreak_ = 0;
   this.startTime_ = 0;
+  this.streamFormat_ = google.ima.dai.api.StreamRequest.StreamFormat.HLS;
   this.needsCredentials_ = false;
   this.adIsPlaying_ = false;
   this.mediaElement_ = mediaElement;
-
-  this.mediaElement_.addEventListener('error', function(event) {
-    console.log("MEDIA ELEMENT ERROR:");
-    console.log(event);
-  });
-
   this.receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
   this.receiverManager_.onSenderConnected = function(event) {
     console.log('Sender Connected');
@@ -74,7 +68,6 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.LOADED,
       function(event) {
-        console.log("IMA LOADED");
         const streamUrl = event.getStreamData().url;
         // Each element in subtitles array is an object with url and language
         // properties. Example of a subtitles array with 2 elements:
@@ -92,15 +85,12 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.STREAM_INITIALIZED,
       function(event) {
-        console.log("IMA STREAM INIT");
         self.broadcast_('streamInit');
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.ERROR,
       function(event) {
-        console.log("IMA ERROR:");
-        console.log(event);
         const errorMessage = event.getStreamData().errorMessage;
         self.broadcast_(errorMessage);
       },
@@ -108,49 +98,43 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.CUEPOINTS_CHANGED,
       function(event) {
-        console.log("IMA Cuepoints changed: ");
+        console.log("Cuepoints changed: ");
         console.log(event.getStreamData());
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.STARTED,
       function(event) {
-        console.log("IMA STARTED");
         self.broadcast_('started');
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.FIRST_QUARTILE,
       function(event) {
-        console.log("IMA FIRST_QUARTILE");
         self.broadcast_('firstQuartile');
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.MIDPOINT,
       function(event) {
-        console.log("IMA MIDPOINT");
         self.broadcast_('midpoint');
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.THIRD_QUARTILE,
       function(event) {
-        console.log("IMA THIRD QUARTILE");
         self.broadcast_('thirdQuartile');
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.COMPLETE,
       function(event) {
-        console.log("IMA COMPLETE");
         self.broadcast_('complete');
       },
       false);
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.AD_BREAK_STARTED,
       function(event) {
-        console.log("IMA AD BREAK STARTED");
         self.adIsPlaying_ = true;
         document.getElementById('ad-ui').style.display = 'block';
         self.broadcast_('adBreakStarted');
@@ -159,7 +143,6 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.AD_BREAK_ENDED,
       function(event) {
-        console.log("IMA AD BREAK ENDED");
         self.adIsPlaying_ = false;
         document.getElementById('ad-ui').style.display = 'none';
         self.broadcast_('adBreakEnded');
@@ -172,7 +155,6 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.AD_PROGRESS,
       function(event) {
-        console.log("IMA AD PRORESS");
         const adData = event.getStreamData().adProgressData;
         document.getElementById('ad-position').innerHTML
           = adData.adPosition;
@@ -200,7 +182,7 @@ Player.prototype.getContentTime_ = function() {
 
 /**
  * Sends messages to all connected sender apps.
- * @param {!string} message Message to be sent to senders.
+ * @param {string} message Message to be sent to senders.
  * @private
  */
 Player.prototype.broadcast_ = function(message) {
@@ -250,11 +232,11 @@ Player.prototype.onLoad = function(event) {
    *       videoID: <VIDEO_ID>
    *     }
    */
-
   const imaRequestData = event.data.media.customData;
   this.startTime_ = imaRequestData.startTime;
-  //this.needsCredentials_ = imaRequestData.needsCredentials;
-  this.needsCredentials_ = true;
+  this.streamFormat_ = imaRequestData.format ||
+      google.ima.dai.api.StreamRequest.StreamFormat.HLS;
+  this.needsCredentials_ = imaRequestData.needsCredentials;
   if (imaRequestData.assetKey) {
     this.streamRequest =
       new google.ima.dai.api.LiveStreamRequest(imaRequestData);
@@ -281,9 +263,10 @@ Player.prototype.onSeek = function(event) {
 
 /**
  * Loads stitched ads+content stream.
- * @param {!string} url of the stream.
+ * @param {string} url of the stream.
  */
 Player.prototype.onStreamDataReceived = function(url) {
+  cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
   const self = this;
   const currentTime = this.startTime_ > 0 ? this.streamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
@@ -295,6 +278,10 @@ Player.prototype.onStreamDataReceived = function(url) {
   });
   this.broadcast_('onStreamDataReceived: ' + url);
 
+  const errorCallback = function(errorCode, requestStatus) {
+    console.log('Error: ' + errorCode);
+    console.log(requestStatus);
+  };
   const processMetadataCallback = function(type, data, timestamp) {
     self.streamManager_.processMetadata(type, data, timestamp);
   };
@@ -307,7 +294,6 @@ Player.prototype.onStreamDataReceived = function(url) {
     }
   };
   const updateLicenseRequestInfoCallback = function(requestInfo) {
-    console.log('updateLicenseRequestInfoCallback');
     if (self.needsCredentials_) {
       requestInfo.withCredentials = true;
     }
@@ -315,18 +301,29 @@ Player.prototype.onStreamDataReceived = function(url) {
   const updateSegmentRequestInfoCallback = function(requestInfo) {
     if (self.needsCredentials_) {
       requestInfo.withCredentials = true;
-      //requestInfo.headers = {};
-      //requestInfo.headers['content-type'] = 'application/x-mpegurl';
     }
   };
 
+  host.onError = errorCallback;
   host.processMetadata = processMetadataCallback;
   host.updateManifestRequestInfo = updateManifestRequestInfoCallback;
   host.updateLicenseRequestInfo = updateLicenseRequestInfoCallback;
   host.updateSegmentRequestInfo = updateSegmentRequestInfoCallback;
+
+  let protocol;
+  switch (this.streamFormat_) {
+    case google.ima.dai.api.StreamRequest.StreamFormat.DASH:
+      protocol = cast.player.api.CreateDashStreamingProtocol(host);
+      break;
+    case google.ima.dai.api.StreamRequest.StreamFormat.HLS:
+      protocol = cast.player.api.CreateHlsStreamingProtocol(host);
+      break;
+    default:
+      console.error('Unsupported stream format: ' + this.streamFormat_);
+      break;
+  }
   this.castPlayer_ = new cast.player.api.Player(host);
-  this.castPlayer_.load(
-    cast.player.api.CreateHlsStreamingProtocol(host), currentTime);
+  this.castPlayer_.load(protocol, currentTime);
   if (this.subtitles[0] && this.subtitles[0].ttml) {
     this.castPlayer_.enableCaptions(true, 'ttml', this.subtitles[0].ttml);
   }
