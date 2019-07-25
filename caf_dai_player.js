@@ -144,8 +144,11 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
   } else {
     return vodRequest(loadRequestData).then(function() {
       console.log("MADE VOD REQUEST");
-      console.log('calling play');
-      playerManager.play();
+      console.log('setting timoeut');
+      setTimeout(() => {
+        console.log('calling play');
+        playerManager.play();
+      }, 3000);
       return loadRequestData;
     });
   }
