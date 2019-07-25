@@ -117,8 +117,8 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
       console.log("setting from custom");
       loadRequestData.currentTime = loadRequestData.media.customData.startTime;
     } else if (!loadRequestData.currentTime || loadRequestData.currentTime < 0){
-      console.log("setting to 0");
-      loadRequestData.currentTime = 0;
+      console.log("(not) setting to 0");
+      //loadRequestData.currentTime = 0;
     }
     delete loadRequestData.media.customData.startTime;
   }
