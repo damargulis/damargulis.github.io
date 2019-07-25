@@ -35,8 +35,22 @@ const makeDaiRequest = (contentId, custParams) => {
       console.log("EVENT: " + event.type);
     });
 
-    streamManager.addEventListener(google.ima.dai.api.StreamEvent.Type.FIRST_QUARTILE, (event) => {
-      console.log("GOT FIRST_QUARTILE");
+    streamManager.addEventListener([
+        google.ima.dai.api.StreamEvent.Type.LOADED,
+        google.ima.dai.api.StreamEvent.Type.ERROR,
+        google.ima.dai.api.StreamEvent.Type.CLICK,
+        google.ima.dai.api.StreamEvent.Type.CUEPOINTS_CHANGED,
+        google.ima.dai.api.StreamEvent.Type.STARTED,
+        google.ima.dai.api.StreamEvent.Type.FIRST_QUARTILE,
+        google.ima.dai.api.StreamEvent.Type.MIDPOINT,
+        google.ima.dai.api.StreamEvent.Type.THIRD_QUARTILE,
+        google.ima.dai.api.StreamEvent.Type.COMPLETE,
+        google.ima.dai.api.StreamEvent.Type.AD_BREAK_STARTED,
+        google.ima.dai.api.StreamEvent.Type.AD_BREAK_ENDED,
+        google.ima.dai.api.StreamEvent.Type.AD_PROGRESS
+        google.ima.dai.api.StreamEvent.Type.STREAM_INITIALIZED,
+    ], (event) => {
+      console.log("GOT EVENT: " + event.type);
     });
 
     streamManager.requestStream(streamRequest);
