@@ -153,6 +153,7 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
           //console.log('is paused, playing');
           //playerManager.play();
         } else if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PLAYING) {
+          console.log('play found, seeking to 0');
           playerManager.seek(0);
           clearInterval(intervalId);
         }
