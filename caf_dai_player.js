@@ -145,7 +145,7 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
     return vodRequest(loadRequestData).then(function() {
       console.log("MADE VOD REQUEST");
       console.log('setting timoeut');
-      setTimeout(() => {
+      setInterval(() => {
         console.log('player state:');
         console.log(playerManager.getPlayerState());
       }, 500);
