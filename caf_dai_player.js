@@ -53,6 +53,9 @@ const makeDaiRequest = (contentId, custParams) => {
       console.log("GOT EVENT: " + event.type);
     });
 
+    streamManager.requestStream(streamRequest);
+
+
     //console.log('calling load with null');
     //const nullRequest = new cast.framework.messages.LoadRequestData();
     //playerManager.load().then(() => {
