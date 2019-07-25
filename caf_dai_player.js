@@ -148,6 +148,10 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
       setInterval(() => {
         console.log('player state:');
         console.log(playerManager.getPlayerState());
+        if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PAUSED) {
+          console.log('is paused, playing');
+          playerManager.play();
+        }
       }, 500);
       return loadRequestData;
     });
