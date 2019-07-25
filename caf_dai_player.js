@@ -15,7 +15,7 @@ const makeDaiRequest = (contentId, custParams) => {
     // TODO: get for a test stream
     daiRequestData.contentSourceId = '19823';
     daiRequestData.videoId = 'ima-test';
-    let streamRequest = new google.ima.dai.api.VODStreamRequest(daiRequstData);
+    let streamRequest = new google.ima.dai.api.VODStreamRequest(daiReqeustData);
 
     streamRequest.needsCredentials = false;
 
