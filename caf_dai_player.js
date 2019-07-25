@@ -78,8 +78,6 @@ const vodRequest = (loadRequestData) => {
       });
 }
 
-const context = cast.framework.CastReceiverContext.getInstance();
-const playerManager = context.getPlayerManager();
 const playerDataBinder = new cast.framework.ui.PlayerDataBinder((new cast.framework.ui.PlayerData()));
 const controls = cast.framework.ui.Controls.getInstance();
 
