@@ -47,7 +47,7 @@ const makeDaiRequest = (contentId, custParams) => {
         google.ima.dai.api.StreamEvent.Type.COMPLETE,
         google.ima.dai.api.StreamEvent.Type.AD_BREAK_STARTED,
         google.ima.dai.api.StreamEvent.Type.AD_BREAK_ENDED,
-        google.ima.dai.api.StreamEvent.Type.AD_PROGRESS
+        google.ima.dai.api.StreamEvent.Type.AD_PROGRESS,
         google.ima.dai.api.StreamEvent.Type.STREAM_INITIALIZED,
     ], (event) => {
       console.log("GOT EVENT: " + event.type);
