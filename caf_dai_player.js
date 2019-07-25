@@ -30,8 +30,13 @@ const makeDaiRequest = (contentId, custParams) => {
     });
 
     const events = Object.keys(google.ima.dai.api.StreamEvent.Type);
+    console.log("ADDING LISTENERS FOR: " + events);
     streamManager.addEventListener(events, (event) => {
       console.log("EVENT: " + event.type);
+    });
+
+    streamManager.addEventListener(google.ima.dai.api.StreamEvent.Type.FIRST_QUARTILE, (event) => {
+      console.log("GOT FIRST_QUARTILE");
     });
 
     streamManager.requestStream(streamRequest);
