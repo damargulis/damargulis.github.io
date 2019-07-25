@@ -29,6 +29,11 @@ const makeDaiRequest = (contentId, custParams) => {
       resolve({url: streamData.url, daiCuePoints, subtitles: streamData.subtitles});
     });
 
+    const events = Object.keys(google.ima.dai.api.StreamEvent.Type);
+    streamManager.addEventListener(events, (event) => {
+      console.log("EVENT: " + event.type);
+    });
+
     streamManager.requestStream(streamRequest);
   });
 };
