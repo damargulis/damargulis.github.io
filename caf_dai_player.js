@@ -87,6 +87,7 @@ playerManager.addEventListener(cast.framework.events.EventType.PLAYING, (event) 
 });
 
 playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, loadRequestData => {
+  debugger;
   console.log("LOAD MESSAGE INTERCEPTED");
   if (loadRequestData.media && loadRequestData.media.customData) {
     if (loadRequestData.media.customData.startTime && loadRequestData.media.customData.startTime > 0) {
@@ -110,5 +111,6 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
   }
 });
 
-context.start({queue: (new cast.framework.QueueBase())});
+//context.start({queue: (new cast.framework.QueueBase())});
+context.start();
 
