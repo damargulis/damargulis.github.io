@@ -45,9 +45,9 @@ const vodRequest = (loadRequestData) => {
   streamManager = new google.ima.dai.api.StreamManager(playerElement);
   streamManager.addEventListener(google.ima.dai.api.StreamEvent.Type.CUEPOINTS_CHANGED, adBreaksLoadedHandler, false);
 
-  return makeDaiRequest(loadRquestData.media.contentId, loadRquestData.media.customData.custParams)
+  return makeDaiRequest(loadRequestData.media.contentId, loadRequestData.media.customData.custParams)
       .then((obj) => {
-        loadRquestData.media.contentUrl = obj.url;
+        loadRequestData.media.contentUrl = obj.url;
         let daiCuePoints = obj.daiCuePoints;
         loadRequestData.media.breaks = [];
         loadRequestData.media.breakClips = [];
@@ -67,12 +67,12 @@ const vodRequest = (loadRequestData) => {
 
             totalDuration += b.duration;
 
-            loadRquestData.media.breakClips.push(bc);
+            loadRequestData.media.breakClips.push(bc);
             loadRequestData.media.breaks.push(b);
           }
           //broadcastBreakInfo(obj.daiCuePoints, 
         }
-        return loadRquestData;
+        return loadRequestData;
       });
 }
 
@@ -88,15 +88,15 @@ playerManager.addEventListener(cast.framework.events.EventType.PLAYING, (event) 
 
 playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, loadRequestData => {
   console.log("LOAD MESSAGE INTERCEPTED");
-  if (loadRquestData.media && loadRequestData.media.customData) {
+  if (loadRequestData.media && loadRequestData.media.customData) {
     if (loadRequestData.media.customData.startTime && loadRequestData.media.customData.startTime > 0) {
       console.log("setting from custom");
       loadRequestData.currentTime = loadRequestData.media.customData.startTime;
     } else if (!loadRequestData.currentTime || loadRequestData.currentTime < 0){
       console.log("setting to 0");
-      loadRquestData.currentTime = 0;
+      loadRequestData.currentTime = 0;
     }
-    delete loadRquestData.media.customData.startTime;
+    delete loadRequestData.media.customData.startTime;
   }
 
   if (loadRequestData.media.streamType === cast.framework.messages.StreamType.LIVE) {
@@ -105,7 +105,7 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
   } else {
     return VODStreamManager.vodRequest(loadRequestData).then(function() {
       console.log("MADE VOD REQUEST");
-      return loadRquestData;
+      return loadRequestData;
     });
   }
 });
