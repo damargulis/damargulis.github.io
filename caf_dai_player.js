@@ -103,7 +103,7 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
     console.log("LIVE REQUEST unhandled");
     return null;
   } else {
-    return VODStreamManager.vodRequest(loadRequestData).then(function() {
+    return vodRequest(loadRequestData).then(function() {
       console.log("MADE VOD REQUEST");
       return loadRequestData;
     });
