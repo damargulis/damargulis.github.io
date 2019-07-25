@@ -165,5 +165,5 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
 });
 
 context.start({queue: (new cast.framework.QueueBase())});
-playerManager.setMediaElement(document.getElementById('player'));
+//playerManager.setMediaElement(document.getElementById('player'));
 
