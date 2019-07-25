@@ -13,13 +13,11 @@ const makeDaiRequest = (contentId, custParams) => {
     daiCuePoints = null;
     let daiRequestData = {};
     // TODO: get for a test stream
-    daiRequestData.contentSourceId = null;
-    daiRequestData.videoId = contentId;
+    daiRequestData.contentSourceId = '19823';
+    daiRequestData.videoId = 'ima-test';
     let streamRequest = new google.ima.dai.api.VODStreamRequest(daiRequstData);
 
-    // TODO: need creds? not for test? maybe??
-    streamRequest.needsCredentials = true;
-    streamRequest.apiKey = null;
+    streamRequest.needsCredentials = false;
 
     let customParams = custParams;
 
