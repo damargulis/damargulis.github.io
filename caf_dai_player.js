@@ -53,8 +53,8 @@ const makeDaiRequest = (contentId, custParams) => {
       console.log("GOT EVENT: " + event.type);
     });
 
-    console.log('calling load with empty string');
-    playerManager.load('').then(() => {
+    console.log('calling load with null');
+    playerManager.load(null).then(() => {
       console.log('load success? requesting stream');
       streamManager.requestStream(streamRequest);
     }).catch(() => {
