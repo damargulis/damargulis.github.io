@@ -53,14 +53,15 @@ const makeDaiRequest = (contentId, custParams) => {
       console.log("GOT EVENT: " + event.type);
     });
 
-    console.log('calling load with null');
-    playerManager.load(null).then(() => {
-      console.log('load success? requesting stream');
-      streamManager.requestStream(streamRequest);
-    }).catch(() => {
-      console.log('load failed, requesting stream');
-      streamManager.requestStream(streamRequest);
-    });
+    //console.log('calling load with null');
+    //const nullRequest = new cast.framework.messages.LoadRequestData();
+    //playerManager.load().then(() => {
+    //  console.log('load success? requesting stream');
+    //  streamManager.requestStream(streamRequest);
+    //}).catch((err) => {
+    //  console.log('load failed, requesting stream');
+    //  streamManager.requestStream(streamRequest);
+    //});
 
   });
 };
@@ -104,6 +105,9 @@ const vodRequest = (loadRequestData) => {
           }
           //broadcastBreakInfo(obj.daiCuePoints, 
         }
+
+        console.log('setting autoplay false');
+        loadRequestData.autoplay = false;
         return loadRequestData;
       });
 }
