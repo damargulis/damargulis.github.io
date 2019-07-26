@@ -109,8 +109,8 @@ const vodRequest = (loadRequestData) => {
           //broadcastBreakInfo(obj.daiCuePoints, 
         }
 
-        //console.log('setting autoplay false');
-        //loadRequestData.autoplay = false;
+        console.log('setting autoplay false');
+        loadRequestData.autoplay = false;
         return loadRequestData;
       });
 }
@@ -145,20 +145,22 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
     return vodRequest(loadRequestData).then(function() {
       console.log("MADE VOD REQUEST");
       console.log('setting timoeut');
-      //let intervalId;
-      //intervalId = setInterval(() => {
-      //  console.log('player state:');
-      //  console.log(playerManager.getPlayerState());
-      //  if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PAUSED) {
-      //    //console.log('is paused, playing');
-      //    //playerManager.seek(0);
-      //    //playerManager.play();
-      //  } else if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PLAYING) {
-      //    console.log('play found, seeking to 0');
-      //    playerManager.seek(0);
-      //    clearInterval(intervalId);
-      //  }
-      //}, 500);
+      let intervalId;
+      intervalId = setInterval(() => {
+        console.log('player state:');
+        console.log(playerManager.getPlayerState());
+        if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PAUSED) {
+          console.log('is paused, settng play timeout');
+          setTimeout(() => {
+            console.log('timeout finished, calling play');
+            playerManager.play();
+          }, 5000);
+        } else if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PLAYING) {
+          //console.log('play found, seeking to 0');
+          //playerManager.seek(0);
+          //clearInterval(intervalId);
+        }
+      }, 500);
       return loadRequestData;
     });
   }
