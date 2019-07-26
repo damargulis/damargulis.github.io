@@ -150,12 +150,12 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
         console.log('player state:');
         console.log(playerManager.getPlayerState());
         if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PAUSED) {
+          clearInterval(intervalId);
           console.log('is paused, settng play timeout');
           setTimeout(() => {
             console.log('timeout finished, calling play');
             playerManager.play();
           }, 5000);
-          clearInterval(intervalId);
         } else if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PLAYING) {
           //console.log('play found, seeking to 0');
           //playerManager.seek(0);
