@@ -56,16 +56,6 @@ const makeDaiRequest = (contentId, custParams) => {
     streamManager.requestStream(streamRequest);
 
 
-    //console.log('calling load with null');
-    //const nullRequest = new cast.framework.messages.LoadRequestData();
-    //playerManager.load().then(() => {
-    //  console.log('load success? requesting stream');
-    //  streamManager.requestStream(streamRequest);
-    //}).catch((err) => {
-    //  console.log('load failed, requesting stream');
-    //  streamManager.requestStream(streamRequest);
-    //});
-
   });
 };
 
@@ -143,30 +133,24 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
     return null;
   } else {
     return vodRequest(loadRequestData).then(function() {
-      console.log("MADE VOD REQUEST");
-      console.log('setting timoeut');
-      let intervalId;
-      intervalId = setInterval(() => {
-        console.log('player state:');
-        console.log(playerManager.getPlayerState());
-        if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PAUSED) {
-          clearInterval(intervalId);
-          console.log('is paused, settng play timeout');
-          setTimeout(() => {
-            console.log('timeout finished, calling play');
-            playerManager.play();
-          }, 5000);
-        } else if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PLAYING) {
-          //console.log('play found, seeking to 0');
-          //playerManager.seek(0);
-          //clearInterval(intervalId);
-        }
-      }, 500);
+      //const intervalId = setInterval(() => {
+      //  if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PAUSED) {
+      //    clearInterval(intervalId);
+      //    setTimeout(() => {
+      //      console.log('timeout finished, calling play');
+      //      playerManager.play();
+      //    }, 5000);
+      //  } else if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PLAYING) {
+      //    //console.log('play found, seeking to 0');
+      //    //playerManager.seek(0);
+      //    //clearInterval(intervalId);
+      //  }
+      //}, 500);
       return loadRequestData;
     });
   }
 });
 
-context.start({queue: (new cast.framework.QueueBase())});
+context.start();
 //playerManager.setMediaElement(document.getElementById('player'));
 
