@@ -99,8 +99,8 @@ const vodRequest = (loadRequestData) => {
           //broadcastBreakInfo(obj.daiCuePoints, 
         }
 
-        console.log('setting autoplay false');
-        loadRequestData.autoplay = false;
+        //console.log('setting autoplay false');
+        //loadRequestData.autoplay = false;
         return loadRequestData;
       });
 }
