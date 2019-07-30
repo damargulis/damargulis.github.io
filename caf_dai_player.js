@@ -133,6 +133,17 @@ playerManager.setMessageInterceptor(cast.framework.messages.MessageType.LOAD, lo
     return null;
   } else {
     return vodRequest(loadRequestData).then(function() {
+      const timer = setInterval(() => {
+        console.log('checking at:');
+        console.log(playerElement.currentTime);
+        if (playerElement.currentTime > 0) {
+          console.log('above 0, clearning');
+          playerElement.dispatchEvent(new Event('timeupdate'));
+          clearInterval(timer);
+        } else {
+          console.log('not above');
+        }
+      }, 30);
       //const intervalId = setInterval(() => {
       //  if (playerManager.getPlayerState() === cast.framework.messages.PlayerState.PAUSED) {
       //    clearInterval(intervalId);
