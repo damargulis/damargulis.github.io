@@ -60,7 +60,7 @@ const makeDaiRequest = (contentId, custParams) => {
 };
 
 const vodRequest = (loadRequestData) => {
-  playerElement = document.getElementById('player');
+  playerElement = document.getElementById('player').getMediaElement();
   playerManager.addEventListener(cast.framework.events.EventType.TIME_UPDATE, (mediaElementEvent) => {
     console.log(`currentTime: ${mediaElementEvent.currentMediaTime}`);
   });
